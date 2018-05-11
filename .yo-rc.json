@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Daniel Custódio",
+      "authorEmail": "srdaniiel@gmail.com",
+      "authorUrl": "http://danielcustodio.azurewebsites.net"
+    }
+  }
+}

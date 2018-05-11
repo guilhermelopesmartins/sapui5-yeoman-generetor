@@ -1,0 +1,10 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+		
+		<Button icon="sap-icon://media-rewind"  press="onFirst"  tooltip="Primeiro" />
+		<Button icon="sap-icon://navigation-left-arrow"  press="onPrevius"  tooltip="Anterior" />
+		<Input width="100px" value="{/Id}"  submit="search"   />
+		<Button icon="sap-icon://navigation-right-arrow"  press="onNext"  tooltip="Proximo" />
+		<Button icon="sap-icon://media-forward"  press="onLast"  tooltip="Ultimo" />	
+</core:FragmentDefinition>

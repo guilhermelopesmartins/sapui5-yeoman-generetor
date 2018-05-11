@@ -1,0 +1,63 @@
+.sapSuiteUiCommonsTimeline{
+	max-width: none !important;
+}
+
+.sapUiFormTitleH6 {
+	height: 0px !important;
+}
+
+.tableRanges {
+	background-color: #607D8B;
+	border: #607D8B 1px solid;
+}
+.tableLevels {
+	background-color:  #90A4AE;
+	border: #90A4AE 1px solid;
+}
+.tableApprovers {
+	background-color:  #B0BEC5;
+	border: #B0BEC5 1px solid;
+}
+
+.loginBG:before {
+	content: "";
+	position: inherit;
+	z-index: -1;  
+	display: block;
+	background: url("../img/bg.jpg") no-repeat center center fixed;
+	background-size: cover;
+	width: 100%;
+	height: inherit;
+	overflow: hidden;
+	-webkit-filter: blur(3px);
+	-moz-filter: blur(3px);
+	-o-filter: blur(3px);
+	-ms-filter: blur(3px);
+	filter: blur(3px);
+}
+.bg-master-page {
+	background: linear-gradient(to bottom,#2a4863,#9dc0de)!important;
+}
+div {
+	outline: none !important;
+}
+section {
+	outline: none !important;
+}
+span {
+	outline: none !important;
+}
+
+.sectionFill {
+	min-height:  460px;
+}
+
+.custom-control-center-cost-round{
+	padding: 1px 2px 1px 1px;
+	background: #227093;
+	border-radius: 3px;	
+	display: inline;	
+	line-height: 1.5em;
+	margin-right: 2px;
+	color: #FFF;
+}

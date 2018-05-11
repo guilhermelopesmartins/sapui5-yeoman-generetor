@@ -1,0 +1,18 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		noDataText="{i18n>Commom.NoUsers}"
+		title="{i18n>Commom.SelectAnUSer}"
+		search="handleSearchUser"
+		confirm="handleCloseUserSelection"
+		close="handleCloseUserSelection"
+		items="{/UserCollection}" >
+		<StandardListItem
+			title="{UserCode}"
+			description="{Description}"			
+			iconDensityAware="false"
+			iconInset="false"
+			type="Active" />
+	</SelectDialog>
+</core:FragmentDefinition>

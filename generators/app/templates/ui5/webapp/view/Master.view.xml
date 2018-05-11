@@ -1,0 +1,61 @@
+<core:View 
+	xmlns:core="sap.ui.core"
+	xmlns="sap.uxap"
+	xmlns:l="sap.ui.layout"
+	xmlns:m="sap.m"		
+	height="100%"
+	controllerName="<%= appName %>.controller.Master">
+
+ 	<ObjectPageLayout
+	 subSectionLayout="titleOnTop"
+	 id="idApprovalsRequestPurchase"  
+	 class="sapThemePageBG-asColor"	 
+	 enableLazyLoading="false">	 
+	 <headerTitle>
+			<ObjectPageHeader objectImageURI=''
+							  id="idApprovalsRequestPurchaseHeader"
+							  objectTitle="{currentUser>/U_NAME}"
+							  objectImageShape="Circle"
+							  objectImageAlt="{currentUser>/U_NAME}"
+							  objectSubtitle="{currentUser>/DepartmentName}"
+							  isObjectIconAlwaysVisible="false"
+							  isObjectTitleAlwaysVisible="true"
+							  isObjectSubtitleAlwaysVisible="true">
+				<actions>
+					<ObjectPageHeaderActionButton  id="userLoggedPopOver" icon="sap-icon://customize"  press="userSettingPress"  text="{i18n>Commom.UserConfig}" tooltip="{i18n>Commom.UserConfig}" />					
+				</actions>
+			</ObjectPageHeader>
+		</headerTitle>	 
+		<sections >
+			<ObjectPageSection title="{i18n>Commom.Home}" class="sapUiNoContentPadding">
+				<ObjectPageSubSection  >
+					<blocks>
+						<l:HorizontalLayout 
+							allowWrapping="true" 
+							id="containerTile" 
+							content="{/TileCollection}">
+							<m:GenericTile 
+							header="{title}" 
+							subheader="{info}" 
+							state="{=${state} || 'Loaded'}" 
+							scope="{=${/actionsScope} ? 'Actions' : 'Display'}"
+							press="onTilePress" class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiTinyMarginBottom ">
+
+								<m:TileContent 
+									unit="{numberUnit}" 
+									footer="{footer}">
+									<m:NumericContent 
+									icon="{icon}" 
+									value="{number}" 
+									valueColor="{color}" 
+									indicator="{trend}" 
+									scale="{scale}" />
+								</m:TileContent>
+							</m:GenericTile>
+						</l:HorizontalLayout>
+					</blocks>
+				</ObjectPageSubSection>				
+			</ObjectPageSection>
+		</sections>
+	</ObjectPageLayout>	 
+</core:View>

@@ -1,7 +1,7 @@
 jQuery.sap.require("sap.ui.model.json.JSONModel");
 
-sap.ui.model.json.JSONModel.extend("<%= appName %>.model.CustomModel", {	
-	
+sap.ui.model.json.JSONModel.extend("<%= appName %>.model.RestModel", {	
+		
 	loadDataNew: function(sURL, fnSuccess, fnError, oParameters, bAsync, sType, bMerge, bCache){
 			
 			var that = this;
@@ -21,13 +21,13 @@ sap.ui.model.json.JSONModel.extend("<%= appName %>.model.CustomModel", {
 			jQuery.ajax({
 			  url: sURL,
 			  async: bAsync,
-			  dataType: 'json',
+			  dataType: 'application/json',
 			  cache: bCache,
 			  data: oParameters,
 			  type: sType,
 			  success: function(oData) {
 				if (!oData) {
-					jQuery.sap.log.fatal("The following problem occurred: No data was retrieved by service: " + sURL);
+					jQuery.sap.log.fatal("Aconteceu um problema: O serviço não retornou nenhum dado: " + sURL);
 				}
 				that.oDataOrig = {};
 				that.oDataOrig = jQuery.extend(true,{},that.oDataOrig, oData); // Holds a copy of the original data   
@@ -40,7 +40,7 @@ sap.ui.model.json.JSONModel.extend("<%= appName %>.model.CustomModel", {
 
 			  },
 			  error: function(XMLHttpRequest, textStatus, errorThrown){
-				jQuery.sap.log.fatal("The following problem occurred: " + textStatus, XMLHttpRequest.responseText + ","
+				jQuery.sap.log.fatal("Aconteceu um problema: " + textStatus, XMLHttpRequest.responseText + ","
 							+ XMLHttpRequest.status + "," + XMLHttpRequest.statusText);
 				that.fireRequestCompleted({url : sURL, type : sType, async : bAsync, info : "cache=false;bMerge=" + bMerge});
 				that.fireRequestFailed({message : textStatus,
@@ -66,18 +66,27 @@ sap.ui.model.json.JSONModel.extend("<%= appName %>.model.CustomModel", {
 		this.oDataOrig = this.getData();
     },
     
-    insert:function(url, data, fnSuccess,fnerror){
-       this.loadDataNew(url,fnSuccess,fnerror,data,true,'POST')
+    post:function(url, fnSuccess, fnerror){
+		let data = JSON.stringify(this.getData());
+       	this.loadDataNew(url, fnSuccess, fnerror, data, true, 'POST');
     },
     
-    update:function(url,data,fnSuccess,fnerror){
+    put:function(url, fnSuccess, fnerror){
+		let data = JSON.stringify(this.getData());
         this.loadDataNew(url, fnSuccess , fnerror, data, true, 'PUT');        
-    },
-
-    load:function(url, fnSuccess, fnerror){
+	},
+	
+    get:function(url, fnSuccess, fnerror){		
         this.loadDataNew(url, fnSuccess , fnerror, null, true, 'GET');        
-    },  
-    remove:function(url,data, fnSuccess, fnerror){
-        this.loadDataNew(url, fnSuccess , fnerror, data, true, 'DELETE');        
-    }
+	},  
+	
+    delete:function(url, fnSuccess, fnerror){
+        this.loadDataNew(url, fnSuccess , fnerror, null, true, 'DELETE');        
+	},
+
+	request: function(url, data, fnSuccess, fnError, method){
+		let dataFormated = JSON.stringify(data);
+		this.loadDataNew(url, fnSuccess, fnError,  dataFormated, true, method);
+		
+	}
 });

@@ -12,7 +12,8 @@ sap.ui.define(
 				
 		onInit : function () {			
 			this.setUserTheme();
-			this.getRouter().attachRoutePatternMatched(this._onRouteMatched, this);
+			this.getRouter().getRoute("dashBoard")
+			.attachPatternMatched(this._onRouteMatched, this);
 		},		
 		setUserModel : function(user){			
 			var userModel = new JSONModel();
@@ -82,13 +83,10 @@ sap.ui.define(
 			this._showResquest(oItem);
 		},
 		
-		_onRouteMatched : function (oEvent) {
-            var oEventData = oEvent.getParameter("arguments");
-            if (oEvent.getParameter("name")==="dashBoard"){ 
-				this.setUserModel(this.getUserSession());
-				this.setUserTheme();
-				this._loadData();
-            }
+		_onRouteMatched : function () {           
+			this.setUserModel(this.getUserSession());
+			this.setUserTheme();
+			this._loadData();		
 		},
 		
 		userSettingPress : function(){

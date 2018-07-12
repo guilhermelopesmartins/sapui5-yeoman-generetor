@@ -25,7 +25,7 @@ sap.ui.define([
 				sap.ui.getCore().applyTheme(user.UserSettings.Theme); 
 		},
 		getApiUrl(){
-			let base = ["http://localhost:19127/api"];
+			let base = [this.getOwnerComponent().getMetadata().getConfig().serviceUrl];
 			for (let index = 0; index < arguments.length; index++) {
 				const element = arguments[index];
 				base.push(element);
@@ -34,42 +34,6 @@ sap.ui.define([
 			return base.join('/');
 		},
 		
-		api : {							
-			project:"project",
-			contracts : "contract/selection",
-			employers : "employee/Selection",
-			product : "item",
-			dimensions : "dimension",
-			dashBoard : "dashboard",	
-			measurementUnit: "measurementUnit",
-			requestPending : "requestpurchase/pending",	
-			requestPrevius : "requestpurchase/previus/",	
-			requestNext : "requestpurchase/next/",	
-			requestFirst : "requestpurchase/first",	
-			requestLast : "requestpurchase/last",	
-			requestStatus: "status",
-			requestPurchase : "requestpurchase",				
-			requestPurchaseAccept : "requestpurchase/accept/",				
-			requestPurchaseReject : "requestpurchase/reject/",				
-			approvals : "approvals",				
-			approvalsAccept : "approvals/accept",				
-			approvalsReject : "approvals/reject",				
-			approvalModel : "approvalPattern",	
-			approvalModelNext : "approvalPattern/next/",
-			approvalModelPrevious :"approvalPattern/previous/",
-			approvalModelLast : "approvalPattern/last/",
-			approvalModelFirst :"approvalPattern/first/",
-			token: "security/token",
-			auth: "user/",
-			updateUserSettings: "user/updateSetting"	,
-			companies:"companysource",
-			requestPurchaseFilterAll: "requestpurchase/filterAll",		
-			documentNumber: "documentNumber",		
-			userSettings: "user/getLoggedSettings",
-			approvalStatusResume : "requestpurchase/approvalStatusResume",	
-			projectWorkPlan: 'project/workplan'
-		},
-
 		getModel : function (sName) {
 			return this.getView().getModel(sName);
 		},

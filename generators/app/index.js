@@ -15,13 +15,13 @@ module.exports = class extends Generator {
         type: 'input',
         name: 'appName',
         message: 'Informe o nome do projeto:',
-        default: "MyUI5WebApp"
+        default: 'MyUI5WebApp'
       },
       {
         type: 'input',
         name: 'appDescription',
         message: 'De uma descrição curta sobre o aplicativo:',
-        default: "Descrição do aplicativo"
+        default: 'Descrição do aplicativo'
       }
     ];
 
@@ -32,10 +32,11 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    console.log(this.props)
+    console.log(this.props);
     this.fs.copyTpl(
       this.templatePath('ui5/**/*'),
-      this.destinationPath(this.destinationRoot()+'/../projects/'+this.props['appName']), this.props,
+      this.destinationPath(this.destinationRoot() + '/' + this.props.appName),
+      this.props,
       undefined,
       { globOptions: { dot: true } }
     );

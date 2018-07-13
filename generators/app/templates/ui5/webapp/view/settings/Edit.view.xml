@@ -1,5 +1,6 @@
 <mvc:View 
-	controllerName="<%= appName %>.controller.settings.Edit" 
+	controllerName="<%= appName %>.controller.settings.Edit"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" 
 	xmlns:mvc="sap.ui.core.mvc" 
 	xmlns:l="sap.ui.layout"
 	xmlns:core="sap.ui.core" 
@@ -50,104 +51,30 @@
 							</l:content>
 						</l:Grid>
 					</IconTabFilter>
-					<IconTabSeparator />
-					<IconTabFilter icon="sap-icon://numbered-text" iconColor="Positive" text="{i18n>Commom.DocumentNumber}">					
-						<l:Grid defaultSpan="L12 M12 S12">
-							<l:content>									
-																																									
-								<!-- 	<Table
-										id="documentsNumberControlId"							
-										items="{path: 'DocumentNumbers>/', templateShareable : 'false'}">
-										<headerToolbar>
-											<Toolbar>
-												<Title text="{i18n>Commom.DocumentNumber}" level="H2" />
-											</Toolbar>
-										</headerToolbar>
-										<columns>							
-											<Column demandPopin="true" minScreenWidth="Tablet" >
-												<Text text="{i18n>Settings.ObjType}" />
-											</Column>								
-											<Column demandPopin="true" minScreenWidth="Tablet">
-												<Text text="{i18n>Settings.InitialNumber}" />
-											</Column>
-											<Column demandPopin="true" minScreenWidth="Tablet">
-												<Text text="{i18n>Settings.NextNumber}" />
-											</Column>
-											<Column demandPopin="true" minScreenWidth="Tablet" >
-												<Text text="{i18n>Settings.BeginString}" />
-											</Column>								
-											<Column demandPopin="true" minScreenWidth="Tablet" >
-												<Text text="{i18n>Settings.NumDigits}" />
-											</Column>
-											<Column demandPopin="true" minScreenWidth="Tablet">
-												<Text text="{i18n>Settings.Code}" />
-											</Column>
-										</columns>
-										<items>
-											<ColumnListItem>
-												<cells>	
-													<ObjectNumber number="{DocumentNumbers>ObjType}" />																		
-													<ObjectNumber number="{DocumentNumbers>InitialNumber}"  />
-													<Text text="{DocumentNumbers>NextNumber}"/>										
-													<Text text="{DocumentNumbers>BeginString}"/>																																	
-													<ObjectIdentifier title="{DocumentNumbers>NumDigits}"/> 													
-													<Text text="{DocumentNumbers>Code}"/>											
-												</cells>
-											</ColumnListItem>
-										</items>
-									</Table>  -->	
-
-									<l:HorizontalLayout 
-										allowWrapping="true" 
-										id="documentsNumberControlId" 
-										content="{DocumentNumbers>/}">
-										<GenericTile 
-										header="{path:'DocumentNumbers>ObjType', formatter:'.formatter.documentType'}" 
-										subheader="{i18n>Settings.NextNumber}" 
-										state="{=${state} || 'Loaded'}" 
-										scope="Display"
-										class="sapUiTinyMargin ">
-											<TileContent 
-												unit="Inicial"
-												footer="{DocumentNumbers>InitialNumber}">
-												<NumericContent 
-												icon="sap-icon://number-sign" 
-												value="{DocumentNumbers>NextNumber}" 
-												valueColor="Good" 
-												indicator="Up" 
-												scale="N" />
-											</TileContent>
-										</GenericTile>
-									</l:HorizontalLayout> 							
-									
-								
-							</l:content>
-						</l:Grid>
-					</IconTabFilter>
+					<IconTabSeparator />					
 						<IconTabFilter icon="sap-icon://action-settings" iconColor="Positive" text="{i18n>Commom.GeneralSettings}">					
 						<l:Grid defaultSpan="L12 M12 S12">
-							<l:content>	
+							<l:content>								
 									<l:HorizontalLayout 
-										allowWrapping="true">
-										<GenericTile 
+										allowWrapping="true">									
 
-										header="Cabecalho da configuração" 
-										subheader="Sub titulo" 										
+										<GenericTile 
+										press="_onNavRouter" 
+										header="Cabeçalho"
+										app:router="nomeDaRota"										 
+										subheader="Sub " 										
 										scope="Display"
 										class="sapUiTinyMargin ">
-											<TileContent 
-
-												unit="unidate se necessario"
-												footer="Footer">
+											<TileContent>
 												<NumericContent 
-												press="navToMeasurementUnit" 
 												icon="sap-icon://number-sign" 
-												value="{DocumentNumbers>NextNumber}" 
+												value="50" 
 												valueColor="Good" 
 												indicator="Up" 
 												scale="N" />
 											</TileContent>
 										</GenericTile>
+																			
 									</l:HorizontalLayout> 							
 									
 								

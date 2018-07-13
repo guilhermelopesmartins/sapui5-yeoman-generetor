@@ -4,7 +4,8 @@
 	xmlns:l="sap.ui.layout"
 	xmlns:m="sap.m"		
 	height="100%"
-	controllerName="<%= appName %>.controller.Master">
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	controllerName="<%= appName %>.controller.DashBoard">
 
  	<ObjectPageLayout
 	 subSectionLayout="titleOnTop"
@@ -14,7 +15,7 @@
 	 <headerTitle>
 			<ObjectPageHeader objectImageURI=''
 							  id="idApprovalsRequestPurchaseHeader"
-							  objectTitle="{currentUser>/U_NAME}"
+							  objectTitle="{path:'currentUser>/U_NAME', formatter:'.fmt.formatCaptalize'}"
 							  objectImageShape="Circle"
 							  objectImageAlt="{currentUser>/U_NAME}"
 							  objectSubtitle="{currentUser>/DepartmentName}"
@@ -22,25 +23,24 @@
 							  isObjectTitleAlwaysVisible="true"
 							  isObjectSubtitleAlwaysVisible="true">
 				<actions>
-					<ObjectPageHeaderActionButton  id="userLoggedPopOver" icon="sap-icon://customize"  press="userSettingPress"  text="{i18n>Commom.UserConfig}" tooltip="{i18n>Commom.UserConfig}" />					
+					<ObjectPageHeaderActionButton   id="userLoggedPopOver" icon="sap-icon://customize"  press="userSettingPress"  text="{i18n>Commom.UserConfig}" tooltip="{i18n>Commom.UserConfig}" />										
 				</actions>
 			</ObjectPageHeader>
 		</headerTitle>	 
 		<sections >
-			<ObjectPageSection title="{i18n>Commom.Home}" class="sapUiNoContentPadding">
+			<ObjectPageSection title="{i18n>Commom.Home}">
 				<ObjectPageSubSection  >
 					<blocks>
 						<l:HorizontalLayout 
 							allowWrapping="true" 
 							id="containerTile" 
-							content="{/TileCollection}">
+							content="{/}">
 							<m:GenericTile 
 							header="{title}" 
-							subheader="{info}" 
-							state="{=${state} || 'Loaded'}" 
-							scope="{=${/actionsScope} ? 'Actions' : 'Display'}"
-							press="onTilePress" class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiTinyMarginBottom ">
-
+							subheader="{info}"
+							app:route="{route}"
+							state="Loaded" 							
+							press="onNavRoute" class="sapUiTinyMargin">
 								<m:TileContent 
 									unit="{numberUnit}" 
 									footer="{footer}">

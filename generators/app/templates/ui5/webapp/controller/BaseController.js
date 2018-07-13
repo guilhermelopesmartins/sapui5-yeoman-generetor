@@ -1,10 +1,10 @@
 sap.ui.define([
 		"sap/ui/core/mvc/Controller",
-		"sap/ui/core/routing/History",
+		"<%= appName %>/controller/fragments/Exeption.controller",
 		"<%= appName %>/model/formatter",
 		"sap/ui/model/json/JSONModel",	
 		"sap/m/MessageToast",			
-	], function (Controller, History, formatter, JSONModel, MessageToast) {
+	], function (Controller, Exeption, formatter, JSONModel, MessageToast) {
 	"use strict";
 
 	return Controller.extend("<%= appName %>.controller.BaseController", {		
@@ -24,8 +24,19 @@ sap.ui.define([
 			if(theme != user.UserSettings.Theme)
 				sap.ui.getCore().applyTheme(user.UserSettings.Theme); 
 		},
-		getApiUrl(){
-			let base = [this.getOwnerComponent().getMetadata().getConfig().serviceUrl];
+
+		api :{
+			token : 'tokenEndPoint',
+			user: 'User.json',
+			notification: 'Notifications.json',
+			settings:'Settings.json'
+		},
+
+		getServerUrl(){			
+			let base = [];
+			let serve = this.getOwnerComponent().getMetadata().getConfig().serviceUrl;
+			base.push(serve);
+
 			for (let index = 0; index < arguments.length; index++) {
 				const element = arguments[index];
 				base.push(element);
@@ -33,18 +44,11 @@ sap.ui.define([
 
 			return base.join('/');
 		},
-		
+
 		getModel : function (sName) {
 			return this.getView().getModel(sName);
 		},
-
-		formatRequestPurchaseState : function(state){
-			return formatter.formatRequestPurchaseState(state);
-		},	
-
-		formatDimActive : function(dimActive){
-			return formatter.dimActive(dimActive);
-		},
+		
 		setUserModel : function(user){
 			var userModel = new JSONModel();
             userModel.setData(user);
@@ -94,7 +98,7 @@ sap.ui.define([
 		setUserSessionToken : function(UserAcessToken){
 			var user = JSON.parse(sessionStorage.getItem('currentUser'));
 			if(!user)
-				return;
+				user={};
 			user.Token = UserAcessToken;
 			var user = JSON.stringify(user);
 			sessionStorage.setItem('currentUser', user);
@@ -118,11 +122,11 @@ sap.ui.define([
 				this.getRouter().navTo("login");
 		},
 
-		loadModel(context, endPoint, nameModel, busyControls, refresh =false ){
-			let model =new JSONModel();
+		loadModel(context, endPoint, nameModel, busyControls, refresh = false ){
+			let model = new JSONModel();
 			
 			model.attachRequestSent(data => { busyControls.forEach(x => x.setBusy(true))});
-            model.attachRequestCompleted(data =>{ busyControls.forEach(x => x.setBusy(false) )});
+            model.attachRequestCompleted(data =>{ console.log(model.getData()); busyControls.forEach(x => x.setBusy(false) )});
             model.attachRequestFailed(data =>{ busyControls.forEach(x => x.setBusy(false))});            
 			model.loadData(endPoint);
 			context.setModel(model, nameModel);
@@ -151,6 +155,11 @@ sap.ui.define([
             model.attachRequestFailed(data =>{ busyControls.forEach(x => x.setBusy(false))});            
 			model.loadData(endPoint);	
 			
-		},		
+		},	
+		
+		showExeption(exeption, button){
+			let ctrl =new Exeption();
+			ctrl.show(exeption, button);
+		}
 	});
 });

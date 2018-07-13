@@ -2,9 +2,9 @@ sap.ui.define(
 	[
 		"<%= appName %>/controller/BaseController",
 		"sap/m/MessageToast",	
-		"sap/ui/model/json/JSONModel",		
+		"<%= appName %>/model/RestModel",		
 	],
-	function (BaseController, MessageToast, JSONModel) {
+	function (BaseController, MessageToast, RestModel) {
 	"use strict";
 
 	return BaseController.extend("<%= appName %>.controller.security.Login", {
@@ -12,10 +12,10 @@ sap.ui.define(
 			
 			var that = this;
 			this.byId("<%= appName %>LoginPage").attachBrowserEvent("keypress", oEvent =>{
-				if(oEvent.keyCode != jQuery.sap.KeyCodes.ENTER) return;
-				
+				if(oEvent.keyCode != jQuery.sap.KeyCodes.ENTER) return;				
 				that.onLogin();
 			});
+
 			this.UserCredentials = {
 				UserName: "",
 				Password:"",
@@ -25,16 +25,37 @@ sap.ui.define(
 		},	
 			
 		
-		onLogin : function(){								
-			if(this.byId("loginButton").getBusy()) return;				
+		onLogin : function(oEvent){
+			this.onFakeLogin(oEvent);
+			return;
 			
-			this.byId("loginButton").setBusy(true);
+			let loginButton =this.byId("loginButton");
+			if(loginButton.getBusy()) return;				
+			
+			loginButton.setBusy(true);
 			this.UserCredentials.UserName = this.byId("userName").getValue();
 			this.UserCredentials.Password = this.byId("userPass").getValue();				
-			this.getToken(this.UserCredentials, this.getUserData, this.showErrorMessage);
+			this.getToken(this.UserCredentials, loginButton); 
 		},
-        setUserSession: function (user, access_token) {
-										
+		onFakeLogin : function(oEvent){
+			let loginButton =this.byId("loginButton");
+			if(loginButton.getBusy()) return;				
+			
+			loginButton.setBusy(true);
+			this.UserCredentials.UserName = this.byId("userName").getValue();
+			this.UserCredentials.Password = this.byId("userPass").getValue();	
+			let serverURL = this.getServerUrl(this.api.user);			
+			let model = new RestModel(serverURL);
+			model.attachRequestCompleted(response => {				
+				let data = response.getSource().getData();				
+				this.setUserModel(data);										
+				this.setUserSession(data,"thisIsAFakeToken");										
+				this.setBusyLogin(false);					
+				this.redirectIfLogged(); 
+			});			
+		},
+
+        setUserSession: function (user, access_token) {										
 			user.Token = access_token;
             sessionStorage.setItem('currentUser', JSON.stringify(user));            
 		},
@@ -42,63 +63,60 @@ sap.ui.define(
 		setBusyLogin(bBusy){
 			this.byId("loginButton").setBusy(bBusy);
 		},
-		getToken : function(userCredentials, successCallback, errorCallback){
-			var sErrorOnRequest = this.getText("errorOnRequest");
+
+		getToken : function(userCredentials){
+			
             var sInvalidUserMessage = this.getText("invalidUser");
-			var that = this;
+			
             if (!userCredentials || !userCredentials.UserName || !userCredentials.Password){
 				MessageToast.show(sInvalidUserMessage);
-				that.setBusyLogin(false);
+				this.setBusyLogin(false);
 				return;
 			}
 			
-			   userCredentials.grant_type = 'password';
-			   var serveURL = this.getApiUrl(this.api.token);
-			jQuery.ajax({
-                url: serveURL,
-                type: 'POST',
-                dataType: 'json',
-                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                data: userCredentials,
-                success: function (result) {   					
-                    successCallback(userCredentials, result, that);
-                },
-                error: function (result) {
-					errorCallback(result, that);	
-					that.setBusyLogin(false);									
-                },
-            });  
+			userCredentials.grant_type = 'password';
+			var serveURL = this.getServeUrl(this.api.token);
+			var apiRequest = new RestModel();			   
+			apiRequest.request(
+				serveURL, 
+				userCredentials,
+				data => this.getUserData(userCredentials, data),
+				err => {
+					let erro = err.response;
+
+				    console.log(erro)
+					this.showExeption(erro);
+					this.setBusyLogin(false);
+				},
+				"POST",
+				"json"
+			);			  
 		},
-		getUserData: function(userCredentials, responseToken, that){
-			that.setUserSessionToken(responseToken.access_token);
-			var serveURL = that.getApiUrl(that.api.auth , userCredentials.UserName);
-			$.ajax({
-                url: serveURL ,
-                async: false,
-                dataType: 'json',
-                type: 'GET',                               
-                success: function (data, status) {					
-					that.setUserSession(data, responseToken.access_token);
-					that.setUserModel(data);										
-					that.setBusyLogin(false);					
-					that.redirectIfLogged();                    
-                },
-                error: function (data) {
-				   	that.showErrorMessage(data,that);
-					that.setBusyLogin(false);				   
-                },
-                beforeSend: function (xhr, settings) {
-                    xhr.setRequestHeader('Authorization', 'Bearer ' + responseToken.access_token);
-                }
-            });
+
+		getUserData: function(userCredentials, responseToken){
+			this.setUserSessionToken(responseToken.access_token);
+			var serveURL = this.getServerUrl(this.api.user , userCredentials.UserName);			
+			var apiRequest = new RestModel();	
+			
+			apiRequest.request(
+				serveURL, 
+				userCredentials,
+				data => {
+					console.log(data);
+					this.setUserModel(data);										
+					this.setBusyLogin(false);					
+					this.redirectIfLogged();  
+				},
+				err => {
+					
+					this.showExeption({error_description: err.response.Message, error:err.message});
+					this.setBusyLogin(false);
+				},
+				"get",
+				"json"
+			);		
 		},
-		showErrorMessage : function(error,ctx){	
-			try {				
-				MessageToast.show(error.responseJSON.error_description);			
-			} catch (error) {
-				MessageToast.show(ctx.getText("Commom.ServeError"));							
-			}			
-		},			
+					
 		
 	});
 

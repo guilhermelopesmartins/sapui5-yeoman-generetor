@@ -11,14 +11,13 @@
 			<VBox fitContainer="true" justifyContent="Center" alignItems="Center" alignContent="Center">     
      
 				<items>
-					<Image  src="webapp/img/Logo.png" ></Image>    
-					<ToolbarSpacer/> 
+					<Image  src="webapp/img/Logo.png" ></Image>    					
 					<Input id="userName" placeholder="{i18n>Commom.User}" value="{/UserName}"></Input>
 					<Input id="userPass" placeholder="{i18n>Commom.Password}" type="Password" value="{/Password}" ></Input>
-					<Button id="loginButton" width="12rem" text="{i18n>Commom.Login}" type="Emphasized" press="onLogin"></Button>
+					<Button id="loginButton" width="11rem" text="{i18n>Commom.Login}" type="Emphasized" press="onLogin"></Button>
 				
 				</items>
-				</VBox>
+			</VBox>
 
 		</content> 
 		<footer>

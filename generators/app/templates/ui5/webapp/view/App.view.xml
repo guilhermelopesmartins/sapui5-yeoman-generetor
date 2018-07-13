@@ -19,11 +19,17 @@
 			</layoutData>
 		</Text>
 		<ToolbarSpacer />
-		<Button id="userLoggedPopOver" text="{currentUser>/U_NAME}" type="Transparent"  icon="sap-icon://person-placeholder"  press="onLoginPopOver">
+		<Button id="userLoggedPopOver"    text="{currentUser>/U_NAME}" type="Transparent"  icon="sap-icon://person-placeholder"  press="onLoginPopOver">
 			<layoutData>
 				<OverflowToolbarLayoutData priority="NeverOverflow" />
 			</layoutData>
 		</Button>
+		<Button id="userNotifications"  type="Transparent"  icon="sap-icon://ui-notifications"  press="onUserNotifications">
+			<layoutData>
+				<OverflowToolbarLayoutData priority="NeverOverflow" />
+			</layoutData>
+		</Button>
+			
 	</tnt:ToolHeader>
 	<App id="app" />
 </mvc:View> 

@@ -5,10 +5,14 @@ sap.ui.define([
   return {
 
     formatUpperCase: function(sName) {
+      if(!sName)
+        return;
       return sName && sName.toUpperCase();
     },
 
     formatCaptalize: function(sName){
+      if(!sName) return;
+      
       return sName[0].toUpperCase() + sName.slice(1);
     },
 
@@ -34,6 +38,19 @@ sap.ui.define([
       var data = new Date().toISOString();      
       return data.substring(0, data.length - 1);
     },
+    getPreviousMothData(dateObj){
+      let tempDateObj = new Date(dateObj);
+
+      if(tempDateObj.getMonth) {
+        tempDateObj.setMonth(tempDateObj.getMonth() - 1);
+      } else {
+        tempDateObj.setYear(tempDateObj.getYear() - 1);
+        tempDateObj.setMonth(12);
+      }
+    
+      return tempDateObj
+    },
+
     getIdFromStringEndPoint: function(sEndPoint){
         var arr = sEndPoint.split("/");
         var objectId = arr[arr.length-1];
@@ -100,6 +117,28 @@ sap.ui.define([
           return "Success"; 
       }
     },
+    showCancelButton :  function (statusId) {      
+      switch (statusId) {                
+        case 'N':
+          return true;
+        case 'W':
+          return true;          
+        default:
+          return false;
+      }
+    },
+    numberToPriority :  function (priorit) {      
+      switch (priorit) {                
+        case "2":
+          return "High";
+        case "1":
+          return "Medium";          
+        case "0":
+          return "Low";          
+        default:
+          return "None";
+      }
+    },
     maxRecordsPerSearch : function(iValue){
       if (iValue < 50) {
 				return "Success";
@@ -144,16 +183,26 @@ sap.ui.define([
     },
     percentStateCritical:function(percent){
       
-      if(percent > 0 && percent < 50)
+      if(percent > 0 && percent < 60)
         return sap.ui.core.ValueState.Success;
-      else if(percent >= 50 && percent < 80)
-        return sap.ui.core.ValueState.None;
-      else if(percent >= 80 && percent <= 99.99)
+      else if(percent >= 60 && percent < 80)
         return sap.ui.core.ValueState.Warning;
+      else if(percent >= 80 && percent <= 100)
+      return sap.ui.core.ValueState.Error;  
       else {
-        return sap.ui.core.ValueState.Error;
+        return sap.ui.core.ValueState.None;        
       }
 
+    },
+    listContainItems(list){
+      if(!Array.isArray(list))
+        return false;
+      
+      return (list.length > 0);
+    },
+    alertWasUnread(yesNo){
+      if(yesNo === 'N') return true;      
+      return false;
     }
   };
 

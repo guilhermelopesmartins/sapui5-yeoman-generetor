@@ -16,42 +16,38 @@ function (BaseController, JSONModel, Device, MessageToast, MessageBox, BusyIndic
     return BaseController.extend("<%= appName %>.controller.settings.Edit", {
 
         onInit : function () {							
-            var oRouter;				                                  
-            oRouter = this.getRouter();
-            oRouter.attachRoutePatternMatched(this._onRouteMatched, this);          
+            
+            this
+            .getRouter()
+            .getRoute('settings')
+            .attachPatternMatched(this._onRouteMatched, this);          
+            
             var model = {Theme : ''}
             this.oModel = new JSONModel();
             this.oModel.setData(model);
             this.setModel(this.oModel);
             this._loadThemes();
-            this._loadDocumentNumbers()
+
         }, 
         formatter : formatter,    
-        _loadThemes : function(){
-            var themes = [
-				{Id:"sap_belize", Description:"Belize"},
-				{Id:"sap_belize_plus", Description:"Belize Plus"}, 
-				{Id:"sap_bluecrystal", Description:"Blue Crystal"}, 
-				{Id:"sap_belize_hcb", Description:"Alto Constraste Preto"}, 
-				{Id:"sap_belize_hcw", Description:"Alto Contraste Branco"}
-				
-			];
-			
-			var oViewModelSelections = new JSONModel({themes : themes});
+        _loadThemes : function(){            
+            var themes = this.getOwnerComponent().getMetadata().getManifest()["sap.ui"].supportedThemes;            
+            var oViewModelSelections = new JSONModel({themes : themes});
 			this.setModel(oViewModelSelections,"oViewModelSelections");		
         },
-        _loadDocumentNumbers : function(){
-            this.loadModel(this, this.getApiUrl(this.api.documentNumber), 'DocumentNumbers', [this.byId('documentsNumberControlId')]);
-        },
+
         _loadSettings : function(){
-            this.loadModel(this, this.getApiUrl(this.api.userSettings), "Settings", [this.byId('idIconTabBar')]);
+            this.byId('idIconTabBar').setBusy(true);
+            let serverURL = this.getServerUrl(this.api.settings);
+            let model = new JSONModel(serverURL);
+            
+            this.setModel(model,"Settings");            
+            this.byId('idIconTabBar').setBusy(false);
+
         },
         _onRouteMatched : function(oEvent){            
-            if (oEvent.getParameter("name")==="settings"){ 
-                this._loadSettings();
-            }
+            this._loadSettings();
         },
-
         
         applyConfig : function(oEvent){            
 			var newConfig = this.getModel("Settings").getProperty("/Theme");
@@ -60,35 +56,13 @@ function (BaseController, JSONModel, Device, MessageToast, MessageBox, BusyIndic
         },
         
         Save : function(oEvent)     {
-            var buttonFired = oEvent.getSource();
-            buttonFired.setBusy(true);
-            var messageSucess = this.getText("Commom.Updated");                        
-            var model = JSON.stringify(this.getModel("Settings").getData());
-            var serverUrl = this.getApiUrl(this.api.updateUserSettings);            
-            var that = this;
-            $.ajax({
-                type : 'PUT',
-                contentType : "application/json",
-                url :serverUrl,
-                data: model,
-                dataType : "json",
-                success: function (data) {																			
-                    buttonFired.setBusy(false);	
-                    var newConfig = that.getModel("Settings").getProperty("/Theme");
-                    var user = that.getUserSession();
-                    user.UserSettings.Theme = newConfig;
-                    MessageToast.show(messageSucess);
-                    that.setUserSession(user);				         
-                               
-                },
-                error: function (data) {
-                    MessageToast.show(data.responseText)
-                    buttonFired.setBusy(false);				                    		   
-                }
-            });
+            
         },
-        navToMeasurementUnit : function(){
-            this.getRouter().navTo("measurementUnit")
+        _onNavRouter:function(oEvent){
+            let Router = oEvent.getSource().data("router");
+            return;
+
+            this.getRouter().navTo(Router);
         }
     });
 });

@@ -5,7 +5,7 @@
     "id": "<%= appName %>",
     "type": "application",
     "i18n": "i18n/i18n.properties",
-    "title": "{{MasterView.tittle}}",
+    "title": "{{App.name}}",
     "description": "{{appDescription}}",
     "applicationVersion": {
       "version": "1.0.0"

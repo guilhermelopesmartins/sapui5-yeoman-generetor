@@ -13,7 +13,7 @@
 		</Button>
 		<ToolbarSpacer />		
 		
-		<Text text="{i18n>MasterView.tittle}" wrapping="false">
+		<Text text="{i18n>App.Name}" wrapping="false">
 			<layoutData>
 				<OverflowToolbarLayoutData priority="Disappear" />
 			</layoutData>

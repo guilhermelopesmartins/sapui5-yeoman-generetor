@@ -19,6 +19,12 @@ module.exports = class extends Generator {
       },
       {
         type: 'input',
+        name: 'shortName',
+        message: 'Informe o nome curto para o atalho da PWA (progressive Web App)',
+        default: 'Invent'
+      },
+      {
+        type: 'input',
         name: 'appDescription',
         message: 'De uma descrição curta sobre o aplicativo:',
         default: 'Descrição do aplicativo'

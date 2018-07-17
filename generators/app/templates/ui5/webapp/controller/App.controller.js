@@ -14,14 +14,12 @@ sap.ui.define(
 	return BaseController.extend("<%= appName %>.controller.App", {
 		fmt:formatter,
 
-		onInit : function(){
-			
+		onInit : function(){			
 			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
 			this.setUserTheme()			
 			this.setUserModelFromSession();	
 			this.registerEventAllRequestsSend();
 			this.registerNotificationsTimeInterval();	
-
 		},		
 		
 		onHome : function(){
@@ -38,7 +36,7 @@ sap.ui.define(
 			$(document).ajaxSend(function (event, jqxhr, settings) {
 				var isGettingToken = settings.url.includes(that.api.token);
 				var isGettingNottifications = settings.url.includes(that.api.alertMessage);
-				var token = that.getUserSession().Token;
+				var token = that.getAccessToken();
 				if(isGettingNottifications && that.isOnLogginPage())
 					jqxhr.abort('As notificações só podem ser lidas após o login');
 
@@ -106,7 +104,6 @@ sap.ui.define(
 		},
 
 		loadUserNotifications(button){
-			
 
 			if(this._oPopoverUserNotifications && this._oPopoverUserNotifications.isOpen()) return;
 			
@@ -141,7 +138,7 @@ sap.ui.define(
 		//Session Logout
 		onLoginPopOver : function(oEvent){
 			if(!this.getUserSession()){
-				MessageToast.show(this.getText("ApprovalModel.NoLoggedUser"));				
+				MessageToast.show(this.getText("Commom.NoLoggedUser"));				
 				this.getRouter().navTo('login');
 			}
 			else

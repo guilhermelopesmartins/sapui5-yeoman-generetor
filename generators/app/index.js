@@ -28,6 +28,12 @@ module.exports = class extends Generator {
         name: 'appDescription',
         message: 'De uma descrição curta sobre o aplicativo:',
         default: 'Descrição do aplicativo'
+      },
+      {
+        type: 'input',
+        name: 'companyLink',
+        message: 'link do site da empresa',
+        default: 'http://inventsoftware.com.br'
       }
     ];
 
@@ -49,6 +55,10 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.installDependencies();
+    this.installDependencies({
+      bower: false,
+      npm: true,
+      yarn: false
+    });
   }
 };

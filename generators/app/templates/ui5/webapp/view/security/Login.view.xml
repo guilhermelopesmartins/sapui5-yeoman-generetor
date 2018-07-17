@@ -23,10 +23,10 @@
 		<footer>
 			<Bar>
 				<contentLeft>
-					<Link class="sapUiTinyMarginBegin" href="http://inventsoftware.com.br/"  target="_blank"   text="Invent Software Ltda"></Link>
+					<Link class="sapUiTinyMarginBegin" href="{i18n>App.CompanyLink}"  target="_blank"   text="Invent Software Ltda"></Link>
 				</contentLeft>
 				<contentRight>
-					<Text class="sapUiTinyMarginEnd" text="Contract One App"></Text>
+					<Text class="sapUiTinyMarginEnd" text="{i18n>App.Name}"></Text>
 				</contentRight>
 			</Bar>
 		</footer>	

@@ -37,6 +37,7 @@ sap.ui.define(
 			this.UserCredentials.Password = this.byId("userPass").getValue();				
 			this.getToken(this.UserCredentials, loginButton); 
 		},
+
 		onFakeLogin : function(oEvent){
 			let loginButton =this.byId("loginButton");
 			if(loginButton.getBusy()) return;				
@@ -48,15 +49,16 @@ sap.ui.define(
 			let model = new RestModel(serverURL);
 			model.attachRequestCompleted(response => {				
 				let data = response.getSource().getData();				
+				this.setUserSessionToken("thisIsAFakeToken");										
 				this.setUserModel(data);										
-				this.setUserSession(data,"thisIsAFakeToken");										
+				this.setUserSession(data);										
 				this.setBusyLogin(false);					
 				this.redirectIfLogged(); 
 			});			
 		},
 
-        setUserSession: function (user, access_token) {										
-			user.Token = access_token;
+        setUserSession: function (user) {										
+			user.Token = this.getAccessToken();
             sessionStorage.setItem('currentUser', JSON.stringify(user));            
 		},
 		
@@ -93,6 +95,10 @@ sap.ui.define(
 			);			  
 		},
 
+		setUserSessionToken : function(userAcessToken){
+			sessionStorage.setItem('currentUserToken', userAcessToken);
+		},
+
 		getUserData: function(userCredentials, responseToken){
 			this.setUserSessionToken(responseToken.access_token);
 			var serveURL = this.getServerUrl(this.api.user , userCredentials.UserName);			
@@ -103,7 +109,8 @@ sap.ui.define(
 				userCredentials,
 				data => {
 					console.log(data);
-					this.setUserModel(data);										
+					this.setUserModel(data);
+					this.setUserSession(data);
 					this.setBusyLogin(false);					
 					this.redirectIfLogged();  
 				},
@@ -115,6 +122,12 @@ sap.ui.define(
 				"get",
 				"json"
 			);		
+		},
+
+		setUserModel : function(user){
+			var userModel = new RestModel();
+            userModel.setData(user);
+            sap.ui.getCore().setModel(userModel, "currentUser");			
 		},
 					
 		

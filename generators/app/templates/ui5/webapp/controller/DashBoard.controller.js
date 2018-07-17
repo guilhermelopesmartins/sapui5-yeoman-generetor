@@ -19,11 +19,7 @@ sap.ui.define(
 
 		},
 		fmt: Formatter,		
-		setUserModel : function(user){			
-			var userModel = new JSONModel();
-            userModel.setData(user);
-            this.setModel(userModel, "currentUser");			
-		},
+
 		_loadData : function(){
 			let model = new JSONModel();
 			model.setData([{
@@ -52,8 +48,7 @@ sap.ui.define(
 			this._showResquest(oItem);
 		},
 		
-		_onRouteMatched : function (oEvent) {
-			this.setUserModel(this.getUserSession());
+		_onRouteMatched : function (oEvent) {			
 			this.setUserTheme();
 			this._loadData();
 		},

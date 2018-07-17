@@ -10,12 +10,12 @@
 	id="settingsPage"  
 	navButtonPress="onNavBack" 
 	showNavButton="true" 	
-	title="{i18n>Commom.Menu.Settings}">
+	title="{i18n>Commom.Settings}">
 
 		<content>
 			<IconTabBar id="idIconTabBar" applyContentPadding="true">
 				<items>
-					<IconTabFilter icon="sap-icon://user-settings" iconColor="Critical" text="{i18n>Settings.User}">					
+					<IconTabFilter icon="sap-icon://user-settings" iconColor="Critical" text="{i18n>Commom.User}">					
 						<l:Grid defaultSpan="L4 M6 S6" class="sapUiSmallMarginTop">
 							<l:content>										
 								<VBox>																								
@@ -37,7 +37,7 @@
 								<VBox>	
 								<ObjectStatus
 									class="sapUiSmallMarginBottom"
-									text="{i18n>App.MaxRecordsPerSearch}"
+									text="{i18n>Setting.MaxRecordsPerSearch}"
 									state="{
 										path: 'Settings>/MaxRecordsPerSearch',
 										formatter: '.formatter.maxRecordsPerSearch'

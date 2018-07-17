@@ -12,10 +12,15 @@ sap.ui.define([
 			return sap.ui.core.UIComponent.getRouterFor(this);
 			
 		},
+
 		setUserTheme : function(){
 			var user = this.getUserSession();
+			if(!user)
+				return;
+			
 			if(user.UserSettings == undefined) 
 				return;
+				
 			if(!user.UserSettings.Theme)
 				return;
 
@@ -47,34 +52,18 @@ sap.ui.define([
 
 		getModel : function (sName) {
 			return this.getView().getModel(sName);
-		},
+		},		
 		
-		setUserModel : function(user){
-			var userModel = new JSONModel();
-            userModel.setData(user);
-            sap.ui.getCore().setModel(userModel, "currentUser");			
-		},
 		setModel : function (oModel, sName) {
 			return this.getView().setModel(oModel, sName);
 		},
-
-		getResourceBundle : function () {
-			return this.getOwnerComponent().getModel("i18n").getResourceBundle();
-		},
-
+		
 		getText: function(sKey){
-			return this.getResourceBundle().getText(sKey);
+			return this.getOwnerComponent().getModel("i18n").getResourceBundle().getText(sKey);
 		},
 
 		onNavBack : function(sRoute, mData) {
-			/* var oHistory = History.getInstance();
-			var sPreviousHash = oHistory.getPreviousHash();
-
-			if (sPreviousHash !== undefined) {		 */		
 				window.history.go(-1);				
-			/* } else {				
-				this.redirectIfLogged();
-			} */
 		},	
 		
 		getIndexOfPath : function(sPath){
@@ -85,25 +74,14 @@ sap.ui.define([
 		},	
 
 		getUserSession : function(){
-            var user = JSON.parse(sessionStorage.getItem('currentUser'));
-            if(!user || !user.Token)
-                return false;
-                
-            return user;
+           return JSON.parse(sessionStorage.getItem('currentUser'));           
 		},
-		setUserSession : function(sUser){
-			var user = JSON.stringify(sUser);
-			sessionStorage.setItem('currentUser', user)            
+
+		getAccessToken : function(){
+			let accesToken = sessionStorage.getItem('currentUserToken');
+            return (accesToken || false);
 		},
-		setUserSessionToken : function(UserAcessToken){
-			var user = JSON.parse(sessionStorage.getItem('currentUser'));
-			if(!user)
-				user={};
-			user.Token = UserAcessToken;
-			var user = JSON.stringify(user);
-			sessionStorage.setItem('currentUser', user);
-		},
-		
+
 		destroyUserSession : function(){
 			sessionStorage.clear();
             sap.ui.getCore().setModel(new JSONModel(this.EmptyUser), "currentUser");			

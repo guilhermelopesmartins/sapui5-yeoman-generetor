@@ -23,7 +23,7 @@
 							  isObjectTitleAlwaysVisible="true"
 							  isObjectSubtitleAlwaysVisible="true">
 				<actions>
-					<ObjectPageHeaderActionButton   id="userLoggedPopOver" icon="sap-icon://customize"  press="userSettingPress"  text="{i18n>Commom.UserConfig}" tooltip="{i18n>Commom.UserConfig}" />										
+					<ObjectPageHeaderActionButton   id="userLoggedPopOver" icon="sap-icon://customize"  press="userSettingPress"  text="{i18n>Commom.Settings}" tooltip="{i18n>Commom.Settings}" />										
 				</actions>
 			</ObjectPageHeader>
 		</headerTitle>	 

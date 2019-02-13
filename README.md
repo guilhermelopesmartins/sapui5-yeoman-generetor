@@ -7,7 +7,7 @@ First, install [Yeoman](http://yeoman.io) and generator-sapui-5-webapp using [np
 
 ```bash
 npm install -g yo
-npm install -g generator-sapui-5-webapp
+Após clonar o repositório, navagar até a pasta raiz sapui5-yeoman-generetor, e executar o comando: npm link
 ```
 
 Then generate your new project:

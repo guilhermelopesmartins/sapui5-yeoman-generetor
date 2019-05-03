@@ -68,7 +68,7 @@ sap.ui.define([
                 this.signaturePad.clear()
                this.activate();
             }else
-                console.error('signaturePad não inicializado, é necessário chamar o método activate(), após a renderização da view?')
+                console.error('signaturePad não inicializado, é necessário chamar o método activate(), após a renderização da view.')
         },
         toDataURL: function() {            
             return this.signaturePad.toDataURL();

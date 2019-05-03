@@ -3,26 +3,29 @@
 
 ## Installation
 
-First, install [Yeoman](http://yeoman.io) and generator-sapui-5-webapp using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
+Primeiro vc precisa instalar o [Yeoman](http://yeoman.io) e depois clonar esse repositório generator-sapui-5-webapp usando [npm](https://www.npmjs.com/) (Vamos assumer que vc já tenha instalado [node.js](https://nodejs.org/)).
 
 ```bash
-npm install -g yo
-Após clonar o repositório, navagar até a pasta raiz sapui5-yeoman-generetor, e executar o comando: npm link
+npm install -g yo //Instalando Yeoman globalmente
+```
+*Após conscluir a instalação, clonar o repositório e navagar até a pasta raiz sapui5-yeoman-generetor, para executar o comando:
+```bash 
+npm link
 ```
 
-Then generate your new project:
-
+##Para criar um novo projeto:
+*
 ```bash
-yo sapui-5-webapp
+yo sapui-5-webapp //Esse comando irá abirr as opções no console para que vc determine nome do projeto, descrição etc...
+
 ```
 
-## Getting To Know Yeoman
+## Instalar dependencias
 
- * Yeoman has a heart of gold.
- * Yeoman is a person with feelings and opinions, but is very easy to work with.
- * Yeoman can be too opinionated at times but is easily convinced not to be.
- * Feel free to [learn more about Yeoman](http://yeoman.io/).
-
+ * Após os aquivos serem gerados, entre na pasta do seu projeto e instale as dependências.
+ ```bash
+ npm i
+```
 ## License
 
 MIT © [Daniel Custódio](http://danielcustodio.azurewebsites.net)

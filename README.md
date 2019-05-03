@@ -4,10 +4,11 @@
 ## Instalação
 
 Primeiro vc precisa instalar o [Yeoman](http://yeoman.io) usando [npm](https://www.npmjs.com/) e depois clonar esse repositório, (Vamos assumir que vc já tenha instalado [node.js](https://nodejs.org/)).
-
+*Instalando Yeoman globalmente
 ```bash
-npm install -g yo //Instalando Yeoman globalmente
+npm install -g yo
 ```
+
 *Após conscluir a instalação, clonar o repositório e navagar até a pasta raiz sapui5-yeoman-generetor, para executar o comando:
 ```bash 
 npm link
@@ -25,6 +26,7 @@ yo sapui-5-webapp
  ```bash
  npm i
 ```
+
 ## License
 
 MIT © [Daniel Custódio](http://danielcustodio.azurewebsites.net)

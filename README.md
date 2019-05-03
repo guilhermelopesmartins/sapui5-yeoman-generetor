@@ -1,9 +1,9 @@
 # generator-sapui-5-webapp [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
 > aplicativo baseado na platafor SAPUI5
 
-## Installation
+## Instalação
 
-Primeiro vc precisa instalar o [Yeoman](http://yeoman.io) e depois clonar esse repositório generator-sapui-5-webapp usando [npm](https://www.npmjs.com/) (Vamos assumer que vc já tenha instalado [node.js](https://nodejs.org/)).
+Primeiro vc precisa instalar o [Yeoman](http://yeoman.io) usando [npm](https://www.npmjs.com/) e depois clonar esse repositório, (Vamos assumir que vc já tenha instalado [node.js](https://nodejs.org/)).
 
 ```bash
 npm install -g yo //Instalando Yeoman globalmente

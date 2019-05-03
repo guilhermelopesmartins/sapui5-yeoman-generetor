@@ -13,11 +13,10 @@ npm install -g yo //Instalando Yeoman globalmente
 npm link
 ```
 
-##Para criar um novo projeto:
-*
+##Criando um novo projeto:
+*O comando a seguir, irá abrir as opções no console para que vc determine nome do projeto, descrição etc...
 ```bash
-yo sapui-5-webapp //Esse comando irá abirr as opções no console para que vc determine nome do projeto, descrição etc...
-
+yo sapui-5-webapp 
 ```
 
 ## Instalar dependencias

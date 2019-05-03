@@ -74,9 +74,9 @@
 
       "routes": [
         {
-          "pattern": "dashBoard",
-          "name": "dashBoard",
-          "target": "dashBoard"
+          "pattern": "app",
+          "name": "app",
+          "target": "app"
         },
         {
           "pattern": "",
@@ -84,9 +84,19 @@
           "target": "login"
         },
         {
+          "pattern": "dashBoard",
+          "name": "dashBoard",
+          "target": "dashBoard"
+        },
+        {
           "pattern": "settings/:userName:",
           "name": "settings",
           "target": "settings"
+        },
+        {
+          "pattern": "exemplos",
+          "name": "exemplos",
+          "target": "exemplos"
         }
       ],
 
@@ -96,17 +106,28 @@
           "viewLevel": 2,
           "transition": "flip"
         },
-
-        "login": {
-          "viewName": "Login",
-          "viewLevel": 1,
-          "viewPath": "<%= appName %>.view.security"
-        },
         "settings": {
           "viewName": "Edit",
           "viewLevel": 3,
           "viewPath": "<%= appName %>.view.settings",
           "transition": "flip"
+        },
+        "login": {
+          "viewName": "Login",
+          "viewLevel": 3,
+          "viewPath": "<%= appName %>.view.security",
+          "transition": "flip"
+        },
+        "exemplos": {
+          "viewName": "CustomControls",
+          "viewLevel": 3,
+          "viewPath": "<%= appName %>.view.exemplos",
+          "transition": "flip"
+        },
+        "app": {
+          "viewName": "App",
+          "viewLevel": 3,
+          "viewPath": "<%= appName %>"
         }
       }
     }

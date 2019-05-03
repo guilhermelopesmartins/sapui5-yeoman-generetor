@@ -1,96 +1,144 @@
 jQuery.sap.require("sap.ui.model.json.JSONModel");
 
-sap.ui.model.json.JSONModel.extend("<%= appName %>.model.RestModel", {	
+sap.ui.model.json.JSONModel.extend(
+	"<%= appName %>.model.RestModel", 	
+	{
+		baseUrl: "",
+		fillData : true,
+		useFetch : true,		
+		requestSettings: {
+			method: 'GET',			
+			headers : {
+				'Content-Type': 'application/json'
+			},						
+			xhrFields: {
+				withCredentials: false
+			}
+		},
+
+		setWithCredentials(boolValue){
+			this.xhrFields.withCredentials = boolValue;
+		}, 
+		setBaseUrl(url){
+			this.baseUrl = url;
+		},
+
+		setUseFetch(bool){
+			this.useFetch = bool;
+		},
+
+		request(url, busyControl)  {
+			if(!this.useFetch) return this.requestByJquery(url, busyControl);				
+			fetch
+			let that = this;
+			if (busyControl) busyControl.setBusy(true);
+
+			const finaly = function () {
+				if (busyControl) busyControl.setBusy(false);
+			};			
+			let promisseResolution = (resolve, reject) => 
+			{
+				fetch(url, this.requestSettings)
+				.then((response) => {
+					that.response = response;
+					if (!response.ok){						
+						response.json().then(jsonError => {
+							reject(jsonError);
+						})						
+					}					
+					else{						
+						if(that.fillData){
+							response.json().then(dataJSON =>{
+								that.setData(dataJSON);																
+								resolve(dataJSON);
+							});
+						}else{
+							resolve(response);
+						}
+					}
+				})
+				.catch(err =>{
+					that.response = response;
+					err.json().then(jsonError =>{
+						reject(jsonError);
+					})
+				})			
+				.finally(finaly);
+			}
+
+			return new Promise(promisseResolution);
 		
-	loadDataNew: function(sURL, fnSuccess, fnError, oParameters, bAsync, sType,dataType, bMerge, bCache){
+		},
+
+		requestByJquery(url, busyControl) {
+
+
+			if (busyControl) busyControl.setBusy(true);
+
+			const promisseResolution = (resolve, reject) => {
+				this.attachRequestFailed(err => reject(err));
+				this.attachRequestCompleted((req)=>{
+					if (busyControl)busyControl.setBusy(false);
+					if(req.getParameter("success"))
+						resolve(req);
+					else
+						reject(req);			
+				});
+
+				this.loadData(url)
+			}
 			
-			var that = this;
-
-			if (bAsync !== false) {
-				bAsync = true;
-			}
-			if (!sType)	{
-				sType = "GET";
-			}
-			if (bCache === undefined) {
-				bCache = this.bCache;
-			}
-
-			if(!dataType){
-				dataType = 'application/json';
-			}
+			return new Promise(promisseResolution)
 			
-			this.fireRequestSent({url : sURL, type : sType, async : bAsync, info : "cache="+bCache+";bMerge=" + bMerge});
+		},
 
-			jQuery.ajax({
-			  url: sURL,
-			  async: bAsync,
-			  dataType: dataType,
-			  cache: bCache,
-			  data: oParameters,
-			  type: sType,
-			  success: function(oData) {
-				if (!oData) {
-					jQuery.sap.log.fatal("Aconteceu um problema: O serviço não retornou nenhum dado: " + sURL);
-				}
-				that.oDataOrig = {};
-				that.oDataOrig = jQuery.extend(true,{},that.oDataOrig, oData); // Holds a copy of the original data   
-				that.setData(oData, bMerge);
-				that.fireRequestCompleted({url : sURL, type : sType, async : bAsync, info : "cache=false;bMerge=" + bMerge});
-				// call the callback success function if informed
-				if (typeof fnSuccess === 'function') {
-                    fnSuccess(oData);
-                }
+		getResponse: function () {
+			return this.oResponse;
+		},
 
-			  },
-			  error: function(XMLHttpRequest, textStatus, errorThrown){
-				
-				jQuery.sap.log.fatal("Aconteceu um problema: " + textStatus, XMLHttpRequest.responseText + ","
-							+ XMLHttpRequest.status + "," + XMLHttpRequest.statusText);
-				that.fireRequestCompleted({url : sURL, type : sType, async : bAsync, info : "cache=false;bMerge=" + bMerge});
-				that.fireRequestFailed({message : textStatus,
-					statusCode : XMLHttpRequest.status, statusText : XMLHttpRequest.statusText, responseText : XMLHttpRequest.responseText});
-			  	// call the callback error function if informed
-				if (typeof fnError === 'function') {
-                    fnError({message : textStatus, statusCode : XMLHttpRequest.status, statusText : XMLHttpRequest.statusText, responseText : XMLHttpRequest.responseText, response: XMLHttpRequest.responseJSON});
-                }
-			  }
-			});
+		post: function (url, controlToBusy) {
+			let data = JSON.stringify(this.getData());
+			this.requestSettings.body = data;
+			this.requestSettings.method = "POST";
+			return this.request(url, controlToBusy);
+		},
 
-	},
-	
-	getOrigData: function(){
-		return this.oDataOrig; 
-	},
-	
-	discardChanges: function(){
-		this.setData(this.oDataOrig); 
-	},
-	
-	commitChanges: function(){
-		this.oDataOrig = this.getData();
-    },
-    
-    post:function(url, fnSuccess, fnerror){
-		let data =this.getData();
-       	this.loadDataNew(url, fnSuccess, fnerror, data, true, 'POST');
-    },
-    
-    put:function(url, fnSuccess, fnerror){
-		let data = JSON.stringify(this.getData());
-        this.loadDataNew(url, fnSuccess , fnerror, data, true, 'PUT');        
-	},
-	
-    get:function(url, fnSuccess, fnerror, dataType="json"){		
-        this.loadDataNew(url, fnSuccess , fnerror, null, true, 'GET', dataType);        
-	},  
-	
-    delete:function(url, fnSuccess, fnerror, dataType="json"){
-        this.loadDataNew(url, fnSuccess , fnerror, null, true, 'DELETE', dataType);        
-	},
+		put: function (url, controlToBusy) {
+			let data = JSON.stringify(this.getData());
+			this.requestSettings.body = data;
+			this.requestSettings.method = "PUT";
+			return this.request(url, controlToBusy);
+		},
 
-	request: function(url, data, fnSuccess, fnError, method, dataType){		
-		this.loadDataNew(url, fnSuccess, fnError,  data, true, method, dataType);
-		
-	}
-});
+		patch: function (url, controlToBusy) {
+			let data = JSON.stringify(this.getData());
+			this.requestSettings.body = data;
+			this.requestSettings.method = "PATCH";
+			return this.request(url, controlToBusy);
+		},
+
+		get(url, controlToBusy) {
+			this.requestSettings.method = "GET";
+			delete this.requestSettings.body;
+			return this.request(url, controlToBusy);
+		},
+
+		delete: function (url, controlToBusy) {
+			this.requestSettings.method = "DELETE";			
+			return this.request(url, controlToBusy);
+		},
+
+		setHeader(name, value) {
+			this.requestSettings.headers[name] = value;
+		},		
+
+		read(path, controlToBusy){
+			if(this.baseUrl == "") {
+				console.log("Para utilizar esse método é necessário informar a URL base");
+				return;
+			}
+			let url = this.baseUrl + path;
+			return this.get(url, controlToBusy);
+		}
+
+	});

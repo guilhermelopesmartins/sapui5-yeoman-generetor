@@ -29,12 +29,22 @@ module.exports = function(grunt) {
 			}
 		},
 		
+		copy: {
+			main: {
+			  files: [
+				// includes files within path
+				{expand: true, cwd: './webapp/controls/',src:['**'], dest: './dist'},		  
+				
+			  ],
+			},
+		  },
 
 	});
 	
 	grunt.loadNpmTasks('grunt-contrib-connect');	
 	grunt.loadNpmTasks('grunt-openui5');
-	grunt.registerTask('build', ['openui5_preload']);
+	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.registerTask('build', ['copy']);
 	
 
 };

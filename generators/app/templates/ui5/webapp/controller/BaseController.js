@@ -1,13 +1,12 @@
 sap.ui.define([
 		"sap/ui/core/mvc/Controller",
 		"<%= appName %>/controller/fragments/Exeption.controller",
-		"<%= appName %>/model/formatter",
-		"sap/ui/model/json/JSONModel",	
-		"sap/m/MessageToast",			
-	], function (Controller, Exeption, formatter, JSONModel, MessageToast) {
+		"<%= appName %>/model/formatter",		
+	], function (Controller, Exeption, formatter) {
 	"use strict";
 
-	return Controller.extend("<%= appName %>.controller.BaseController", {		
+	return Controller.extend("<%= appName %>.controller.BaseController", {	
+		fmt: formatter,	
 		getRouter : function () {
 			return sap.ui.core.UIComponent.getRouterFor(this);
 			
@@ -71,73 +70,24 @@ sap.ui.define([
 			var sIndex = pathArray[pathArray.length - 1];
 			var index = Number.parseInt(sIndex);
 			return index;
-		},	
-
-		getUserSession : function(){
-           return JSON.parse(sessionStorage.getItem('currentUser'));           
 		},
 
-		getAccessToken : function(){
-			let accesToken = sessionStorage.getItem('currentUserToken');
-            return (accesToken || false);
+		showExeption(exeption){
+			let ctrl =new Exeption();
+			ctrl.show(exeption);
+		},		
+		
+		getUserSession : function(){
+			return JSON.parse(localStorage.getItem('currentUser'));           
+		},
+		
+		setUserSession : function(userData){
+			delete userData.Password ;
+			localStorage.setItem("currentUser",JSON.stringify(userData));           
 		},
 
 		destroyUserSession : function(){
-			sessionStorage.clear();
-            sap.ui.getCore().setModel(new JSONModel(this.EmptyUser), "currentUser");			
-			
+			localStorage.removeItem("currentUser");
 		},
-		
-		redirectIfLogged : function(){
-			var user = this.getUserSession();
-			if(user)
-				this.getRouter().navTo("dashBoard");
-		},
-
-		redirectIfNotLogged : function(){
-			var user = this.getUserSession();
-			if(!user)
-				this.getRouter().navTo("login");
-		},
-
-		loadModel(context, endPoint, nameModel, busyControls, refresh = false ){
-			let model = new JSONModel();
-			
-			model.attachRequestSent(data => { busyControls.forEach(x => x.setBusy(true))});
-            model.attachRequestCompleted(data =>{ console.log(model.getData()); busyControls.forEach(x => x.setBusy(false) )});
-            model.attachRequestFailed(data =>{ busyControls.forEach(x => x.setBusy(false))});            
-			model.loadData(endPoint);
-			context.setModel(model, nameModel);
-			if(refresh)
-				context.getView().getModel(nameModel).refresh(true);
-		},
-		
-		loadModelForDialog(context, endPoint, busyControls, successFunction, errorFunction ){
-			let model =new JSONModel();
-			
-			model.attachRequestSent(data => {busyControls.forEach(x => x.setBusy(true))});
-            model.attachRequestCompleted(data => { 
-				busyControls.forEach(x => x.setBusy(false) );
-				var requestReturn = data.getParameters();
-				if(requestReturn.success){
-					context.setModel(model);
-					if(successFunction)
-						successFunction();
-				}else {
-					MessageToast.show(requestReturn.errorobject.responseText);
-					if(errorFunction)
-						errorFunction();
-						
-				}
-			});			
-            model.attachRequestFailed(data =>{ busyControls.forEach(x => x.setBusy(false))});            
-			model.loadData(endPoint);	
-			
-		},	
-		
-		showExeption(exeption, button){
-			let ctrl =new Exeption();
-			ctrl.show(exeption, button);
-		}
 	});
 });

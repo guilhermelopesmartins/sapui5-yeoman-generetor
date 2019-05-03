@@ -1,7 +1,7 @@
 {
   "name": "<%= appName %>",
   "version": "0.1.0",
-  "description": "<%= appDescription %>",
+  "description": "Compartilhamento e testes de constroles customizados",
   "private": true,
   "scripts": {
     "build": "grunt build",

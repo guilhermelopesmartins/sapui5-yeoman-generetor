@@ -5,10 +5,7 @@ const yosay = require('yosay');
 
 module.exports = class extends Generator {
   prompting() {
-    // Have Yeoman greet the user.
-    this.log(
-      yosay(`Welcome to the fabulous ${chalk.red('generator-sapui-5-webapp')} generator!`)
-    );
+    this.log(yosay(`Bem vindo ao Magnífico ${chalk.red('generator-sapui-5-webapp')}!`));
 
     const prompts = [
       {
@@ -52,13 +49,5 @@ module.exports = class extends Generator {
       undefined,
       { globOptions: { dot: true } }
     );
-  }
-
-  install() {
-    this.installDependencies({
-      bower: false,
-      npm: true,
-      yarn: false
-    });
   }
 };

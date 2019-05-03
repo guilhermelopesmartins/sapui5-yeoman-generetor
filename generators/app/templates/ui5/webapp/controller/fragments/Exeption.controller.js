@@ -8,46 +8,20 @@ sap.ui.define([
 
 	return Controller.extend("<%= appName %>.controller.fragments.Exeption", {
 
-		show: function (exeption) {
-           
-            console.log(exeption)
-			var that = this;
-			
+		show: function (exeption) {           
+			var that = this;			
 
 			var oMessageTemplate = new sap.m.MessageItem({
-				type: '{type}',
-				title: '{title}',
+				type: '{exceptionType}',
+				title: '{message}',
 				description: '{description}',
 				subtitle: '{subtitle}',
 				counter: '{counter}',
 				markupDescription: "{markupDescription}",
 				
 			});
-            let titulo =exeption.error || exeption.statusText;
-            let msg =exeption.error_description || exeption.Message;
-			let aMockMessages = [{
-				type: 'Error',
-				title: titulo ,
-				description: msg,
-				subtitle: ''
-				
-			},  {
-				type: 'Warning',
-				title: 'Warning without description',
-				description: ''
-			}, {
-				type: 'Success',
-				title: 'Success message',
-				description: 'First Success message description',
-				subtitle: 'Example of subtitle',
-				counter: 1
-			}, {
-				type: 'Information',
-				title: 'Information message',
-				description: 'First Information message description',
-				subtitle: 'Example of subtitle',
-				counter: 1
-			} ];
+            let msg = exeption.Message || exeption.statusText;            
+			let aMockMessages = this.getMessageArray(exeption);
 
 			var oModel = new JSONModel(),
 				that = this;
@@ -83,8 +57,6 @@ sap.ui.define([
 					}
 				}),
 				
-				
-				
 				oPopoverBar = new sap.m.Bar({
 					contentLeft: [oBackButton],
 					contentMiddle: [
@@ -101,18 +73,23 @@ sap.ui.define([
 				customHeader: oPopoverBar,
 				contentWidth: "440px",
 				contentHeight: "440px",
-				verticalScrolling: false,
-				modal: true,
+				verticalScrolling: false,				
 				content: [oMessageView],
 				beginButton: oCloseButton
             });
             
-			this._oPopover.open();//By(button);
-            
+			this._oPopover.open();
 		},
 
-		/* handlePopoverPress: function (oEvent) {
-		} */
+		getMessageArray(exeption){
+			if(Array.isArray(exeption)) return exeption;
+
+			return [{
+				type: 'Error',				
+				title: exeption.message || exeption.Message,
+				description : ''							
+			}];
+		}
 
 	});
 

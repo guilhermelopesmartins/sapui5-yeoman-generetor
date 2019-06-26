@@ -23,7 +23,7 @@
 		<footer>
 			<Bar>
 				<contentLeft>
-					<Link class="sapUiTinyMarginBegin" href="{i18n>App.<%= appDescription %>}"  target="_blank"   text="Invent Software Ltda"></Link>
+					<Link class="sapUiTinyMarginBegin" href="{i18n>App.Link}"  target="_blank"   text="Invent Software Ltda"></Link>
 				</contentLeft>
 				<contentRight>
 					<Text class="sapUiTinyMarginEnd" text="{i18n>App.Name}"></Text>

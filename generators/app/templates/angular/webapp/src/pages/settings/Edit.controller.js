@@ -60,8 +60,6 @@ function (BaseController, JSONModel, Device, MessageToast, MessageBox, BusyIndic
         },
         _onNavRouter:function(oEvent){
             let Router = oEvent.getSource().data("router");
-            return;
-
             this.getRouter().navTo(Router);
         }
     });

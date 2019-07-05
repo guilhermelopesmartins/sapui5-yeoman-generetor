@@ -59,20 +59,13 @@
 										allowWrapping="true">
 
 										<GenericTile
+                    headerImage="sap-icon://globe"
 										press="_onNavRouter"
-										header="Cabeçalho"
-										app:router="nomeDaRota"
-										subheader="Sub "
+										header="{i18n>Commom.Language}"
+										app:router="languages"
+										subheader="{i18n>Commom.LanguageSub}"
 										scope="Display"
-										class="sapUiTinyMargin ">
-											<TileContent>
-												<NumericContent
-												icon="sap-icon://number-sign"
-												value="50"
-												valueColor="Good"
-												indicator="Up"
-												scale="N" />
-											</TileContent>
+										class="sapUiTinyMargin">
 										</GenericTile>
 
 									</l:HorizontalLayout>

@@ -6,7 +6,8 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("<%= appName %>.src.app.BaseController", {
-		fmt: formatter,
+    fmt: formatter,
+    USER_SESSION_PATH: "currentUser",
 		getRouter : function () {
 			return sap.ui.core.UIComponent.getRouterFor(this);
 
@@ -78,16 +79,36 @@ sap.ui.define([
 		},
 
 		getUserSession : function(){
-			return JSON.parse(localStorage.getItem('currentUser'));
+			return this.getItem(this.USER_SESSION_PATH);
 		},
 
 		setUserSession : function(userData){
 			delete userData.Password ;
-			localStorage.setItem("currentUser",JSON.stringify(userData));
+			this.setItem(this.USER_SESSION_PATH, userData)
 		},
 
 		destroyUserSession : function(){
-			localStorage.removeItem("currentUser");
+			this.removeItem(this.USER_SESSION_PATH);
+		},
+
+		setItem(path, data){
+			localStorage.setItem(path,JSON.stringify(data));
+
+		},
+		getItem(path){
+			let strData = localStorage.getItem(path)
+			if(!strData || strData == '') return null;
+
+			return JSON.parse(strData);
+		},
+
+		removeItem(path){
+			localStorage.removeItem(path);
+		},
+
+    extractObjects: (oEvent) => {
+			let objects = oEvent.getParameter("selectedContexts").map(x => x.getObject())
+			return objects;
 		},
 	});
 });

@@ -9,7 +9,7 @@
 	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 	controllerName="<%= appName %>.src.pages.exemplos.CustomControls">
 
-	<Page title="Teste de Controles"  >
+	<Page title="{i18n>Commom.ControlTest}"  >
 	<content>
 	<Panel expandable="true" expanded="false" width="auto" class="sapUiResponsiveMargin">
 		<headerToolbar>

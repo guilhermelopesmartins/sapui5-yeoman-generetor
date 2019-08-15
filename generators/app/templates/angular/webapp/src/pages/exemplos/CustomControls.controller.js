@@ -13,8 +13,16 @@ sap.ui.define(
 		onInit : function () {
 			this.setModel(new RestModel(),"signature");
 			this.setModel(new RestModel(),"SelectedCenterCosts");
-			this.setModel(new RestModel(),"htmlEditor");
+      this.setModel(new RestModel(),"htmlEditor");
+      this.ConfgQRCode();
 			this.setModel(new RestModel(this.getServerUrl("Distribuition.json")), "Dimensions");
+    },
+    ConfgQRCode(){
+			const qrData = {ItemCode: "I00001", ItemName:"Nome do item"};
+			const valueStr = JSON.stringify(qrData);
+			const qrCodeModelData = {ValueString: valueStr, Value: qrData}
+			this.setModel(new RestModel(qrCodeModelData), "qrCodeModel");
+
 		},
 		activateSignature(oEvent){
 			let panel = oEvent.getSource().getParent().getParent();
@@ -42,14 +50,20 @@ sap.ui.define(
 				});
 			}
 			this.oColorPickerPopover.openBy(oEvent.getSource());
-		},
+    },
+    makeQR(oEvent){
+      const textArea = this.byId("stringValue")
+      const qrinput = 	this.byId("qrinput")
+      qrinput.makeCode(textArea.getValue())
+   },
 		handlePenColorChanged(oEvent){
 			let color = oEvent.getParameter("colorString");
 			MessageToast.show("Chosen color string: " + oEvent.getParameter("colorString"));
 			let input = this.byId("signature");
 			input.setPenColor(color);
 
-		},
+    },
+
 		openDefaultModeSampleCanvas: function (oEvent) {
 			this.inputId = oEvent.getSource().getId();
 			if (!this.oColorPickerPopover) {

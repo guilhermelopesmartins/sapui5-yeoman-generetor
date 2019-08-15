@@ -2,18 +2,20 @@ jQuery.sap.require("sap.ui.model.json.JSONModel");
 
 sap.ui.model.json.JSONModel.extend(
 	"<%= appName %>.model.RestModel",
-	{
+  {
 		baseUrl: "",
 		fillData : true,
-		useFetch : true,
 		requestSettings: {
-			method: 'GET',
-			headers : {
-				'Content-Type': 'application/json'
+			crossDomain: true,
+			dataType: "json",
+			headers: {
+				"Accept-Language": "pt-BR",
+				"Content-Language": "pt-BR"
 			},
 			xhrFields: {
 				withCredentials: false
-			}
+			},
+			credentials: 'include'
 		},
 
 		setWithCredentials(boolValue){
@@ -23,13 +25,8 @@ sap.ui.model.json.JSONModel.extend(
 			this.baseUrl = url;
 		},
 
-		setUseFetch(bool){
-			this.useFetch = bool;
-		},
-
 		request(url, busyControl)  {
-			if(!this.useFetch) return this.requestByJquery(url, busyControl);
-			fetch
+
 			let that = this;
 			if (busyControl) busyControl.setBusy(true);
 
@@ -41,15 +38,27 @@ sap.ui.model.json.JSONModel.extend(
 				fetch(url, this.requestSettings)
 				.then((response) => {
 					that.response = response;
-					if (!response.ok){
+					if (!response.ok && response.status == 400){
 						response.json().then(jsonError => {
 							reject(jsonError);
 						})
+					}else if (!response.ok && response.status == 404){
+						resolve(null);
+					}else if (!response.ok && response.status == 401){
+						response.json().then(jsonError =>{
+							reject(jsonError);
+						})
+					}else if (response.ok && response.status == 204){
+						resolve(null)
 					}
 					else{
 						if(that.fillData){
 							response.json().then(dataJSON =>{
-								that.setData(dataJSON);
+								if(dataJSON.value != undefined)
+									that.setData(dataJSON.value);
+								else
+									that.setData(dataJSON);
+
 								resolve(dataJSON);
 							});
 						}else{
@@ -70,28 +79,6 @@ sap.ui.model.json.JSONModel.extend(
 
 		},
 
-		requestByJquery(url, busyControl) {
-
-
-			if (busyControl) busyControl.setBusy(true);
-
-			const promisseResolution = (resolve, reject) => {
-				this.attachRequestFailed(err => reject(err));
-				this.attachRequestCompleted((req)=>{
-					if (busyControl)busyControl.setBusy(false);
-					if(req.getParameter("success"))
-						resolve(req);
-					else
-						reject(req);
-				});
-
-				this.loadData(url)
-			}
-
-			return new Promise(promisseResolution)
-
-		},
-
 		getResponse: function () {
 			return this.oResponse;
 		},
@@ -100,10 +87,12 @@ sap.ui.model.json.JSONModel.extend(
 			let data = JSON.stringify(this.getData());
 			this.requestSettings.body = data;
 			this.requestSettings.method = "POST";
+			url = url || this.baseUrl;
 			return this.request(url, controlToBusy);
 		},
 
 		put: function (url, controlToBusy) {
+			url = url || this.baseUrl;
 			let data = JSON.stringify(this.getData());
 			this.requestSettings.body = data;
 			this.requestSettings.method = "PUT";
@@ -111,6 +100,7 @@ sap.ui.model.json.JSONModel.extend(
 		},
 
 		patch: function (url, controlToBusy) {
+			url = url || this.baseUrl;
 			let data = JSON.stringify(this.getData());
 			this.requestSettings.body = data;
 			this.requestSettings.method = "PATCH";
@@ -118,6 +108,7 @@ sap.ui.model.json.JSONModel.extend(
 		},
 
 		get(url, controlToBusy) {
+			url = url || this.baseUrl;
 			this.requestSettings.method = "GET";
 			delete this.requestSettings.body;
 			return this.request(url, controlToBusy);
@@ -131,14 +122,46 @@ sap.ui.model.json.JSONModel.extend(
 		setHeader(name, value) {
 			this.requestSettings.headers[name] = value;
 		},
-
-		read(path, controlToBusy){
+		setCrossDomain(boolValue){
+			this.requestSettings.crossDomain= boolValue;
+		},
+		includeCredentials(value){
+			this.requestSettings.credentials = 'include' | value;
+		},
+		removeIncludeCredentials(){
+			delete this.requestSettings.credentials;
+		},
+		read(controlToBusy){
 			if(this.baseUrl == "") {
 				console.log("Para utilizar esse método é necessário informar a URL base");
 				return;
 			}
-			let url = this.baseUrl + path;
+			let url = this.baseUrl;
 			return this.get(url, controlToBusy);
-		}
+		},
+		update(controlToBusy){
+			if(this.baseUrl == "") {
+				console.log("Para utilizar esse método é necessário informar a URL base");
+				return;
+			}
+			let url = this.baseUrl;
+			return this.patch(url, controlToBusy);
+		},
+		create(controlToBusy){
+			if(this.baseUrl == "") {
+				console.log("Para utilizar esse método é necessário informar a URL base");
+				return;
+			}
+			let url = this.baseUrl;
+			return this.post(url, controlToBusy);
+		},
+		remove(controlToBusy){
+			if(this.baseUrl == "") {
+				console.log("Para utilizar esse método é necessário informar a URL base");
+				return;
+			}
+			let url = this.baseUrl;
+			return this.delete(url, controlToBusy);
+		},
 
 	});

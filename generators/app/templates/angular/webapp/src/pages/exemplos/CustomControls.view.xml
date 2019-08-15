@@ -4,6 +4,7 @@
 	xmlns="sap.m"
 	height="100%"
 	xmlns:sing="<%= appName %>.controls.signature"
+	xmlns:qr="<%= appName %>.controls.qrcode"
 	xmlns:custom="<%= appName %>.controls"
 	xmlns:quillEditor="<%= appName %>.controls.quill"
 	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
@@ -113,6 +114,26 @@
 			</Panel>
 
 
+		</content>
+	</Panel>
+	<Panel expandable="true" expanded="false" width="auto" class="sapUiResponsiveMargin">
+		<headerToolbar>
+			<Toolbar height="3rem" style="Clear">
+				<Title text="QR CODE" />
+			 <Button icon="sap-icon://refresh" text="Atualizar " press="makeQR" />
+
+
+			</Toolbar>
+		</headerToolbar>
+		<content>
+      <HBox>
+        <VBox width="50%">
+			    <TextArea id="stringValue"  rows="6"   value="{qrCodeModel>/ValueString}"  width="96%"  />
+        </VBox>
+        <VBox width="50%">
+          <qr:QRCode id="qrinput" value="{qrCodeModel>/Value}" />
+        </VBox>
+      </HBox>
 		</content>
 	</Panel>
 	</content>

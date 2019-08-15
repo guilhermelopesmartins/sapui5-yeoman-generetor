@@ -20,8 +20,9 @@ sap.ui.define(
 
 		loadMarcas(){
 			let url = this.ApiRoot + "/marcas.json"
-			let model = new RestModel();
-			model.setUseFetch(false)
+      let model = new RestModel();
+      model.removeIncludeCredentials()
+
 			model.get(url).then(()=>{
 				let item = this.byId("selectMarca").getSelectedItem().getBindingContext("marcas").getObject();
 				this.updateURLs(item);
@@ -56,7 +57,7 @@ sap.ui.define(
 		getLoadCars(oEvent){
 			let url = `${this.veiculos}.json`;
 			let model = new RestModel();
-			model.setUseFetch(false)
+
 			model.get(url).catch(this.showExeption)
 			this.setModel(model, "fipe");
 		},

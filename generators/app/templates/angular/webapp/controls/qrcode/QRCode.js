@@ -34,6 +34,9 @@ sap.ui.define([
 
 			console.log(this.qrCode,"QR CODE")
 		},
+    makeCode(value){
+			this.qrCode.makeCode(value)
+    },
 
 		renderer: function (oRM, oControl) {
 

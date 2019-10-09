@@ -1,8 +1,0 @@
-.vs
-.vscode
-*/bin
-*/obj
-.lib/*
-node_modules/*
-dist/*
-web.config

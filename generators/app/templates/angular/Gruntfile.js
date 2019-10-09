@@ -3,13 +3,12 @@
 module.exports = function(grunt) {
 
 	grunt.initConfig({
-
 		openui5_preload: {
 			component: {
 				options: {
 					resources: {
 						cwd: 'webapp',
-						prefix: '<%= appName %>',
+						prefix: 'TechSite',
 						src: [
 							'**/*.js',
 							'**/*.fragment.html',
@@ -23,17 +22,20 @@ module.exports = function(grunt) {
 							'!test/**'
 						]
 					},
-					dest: 'webapp'
+					dest: './dist/webapp'
 				},
 				components: true
 			}
 		},
-
+		clean : {
+			dist : './dist/'
+		},
 		copy: {
 			main: {
 			  files: [
 				// includes files within path
-				{expand: true, cwd: './webapp/controls/',src:['**'], dest: './dist'},
+				{expand: true, cwd: './webapp/', src:['**'], dest: './dist/webapp'},
+				{expand: true, cwd: './', src:['index.html','sw.js','favicon.ico'], dest: './dist/'}
 
 			  ],
 			},
@@ -41,10 +43,10 @@ module.exports = function(grunt) {
 
 	});
 
-	grunt.loadNpmTasks('grunt-contrib-connect');
+	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-openui5');
 	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.registerTask('build', ['copy']);
-
+	grunt.registerTask('build', ['clean:dist', 'openui5_preload', 'copy']);
+	grunt.registerTask('default', ['clean', 'build']);
 
 };

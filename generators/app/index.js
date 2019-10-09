@@ -31,12 +31,6 @@ module.exports = class extends Generator {
         name: 'companyLink',
         message: 'link do site da empresa',
         default: 'http://inventsoftware.com.br'
-      },
-      {
-        type: 'input',
-        name: 'appTemplatePattern',
-        message: 'Especifique o template:  angular | ui5',
-        default: 'angular'
       }
     ];
 
@@ -49,8 +43,7 @@ module.exports = class extends Generator {
   writing() {
     console.log(this.props);
 
-    let templatePath =
-      this.props.appTemplatePattern === 'angular' ? 'angular/**/*' : 'ui5/**/*';
+    let templatePath = 'app/**/*';
 
     this.fs.copyTpl(
       this.templatePath(templatePath),

@@ -6,16 +6,11 @@
   "author": {
     "name": "Daniel Custódio",
     "email": "srdaniiel@gmail.com",
-    "url": "http://danielcustodio.azurewebsites.net"
+    "url": "http://custodio.dev"
   },
-  "files": [
-    "generators"
-  ],
+  "files": ["generators"],
   "main": "generators/index.js",
-  "keywords": [
-    "sapui5 openui5 ",
-    "yeoman-generator"
-  ],
+  "keywords": ["sapui5 openui5 ", "yeoman-generator"],
   "devDependencies": {
     "yeoman-test": "^1.7.0",
     "yeoman-assert": "^3.1.0",
@@ -48,20 +43,11 @@
     "test": "jest"
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ],
-    "*.json": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.js": ["eslint --fix", "git add"],
+    "*.json": ["prettier --write", "git add"]
   },
   "eslintConfig": {
-    "extends": [
-      "xo",
-      "prettier"
-    ],
+    "extends": ["xo", "prettier"],
     "env": {
       "jest": true,
       "node": true
@@ -75,9 +61,7 @@
         }
       ]
     },
-    "plugins": [
-      "prettier"
-    ]
+    "plugins": ["prettier"]
   },
   "repository": "Daancustodio/generator-sapui-5-webapp",
   "license": "MIT"

@@ -17,17 +17,16 @@
 							</Toolbar>
 						</headerToolbar>
 						<columns>
-							<Column width="25%"  demandPopin="true"  minScreenWidth="Tablet">
-
+							<Column width="25%"  demandPopin="true"  minScreenWidth="Phone">
 							</Column>
-							<Column  demandPopin="true" minScreenWidth="Phone">
+							<Column  demandPopin="true" minScreenWidth="Tablet">
 								<Text text="{i18n>Commom.Translate}" />
 							</Column>
 						</columns>
 						<items>
 							<ColumnListItem>
 								<cells>
-									<tnt:InfoLabel text="{key}" renderMode="Narrow" colorScheme="8" displayOnly= "true"/>
+									<tnt:InfoLabel text="{key}" tooltip="{key}" renderMode="Narrow" colorScheme="8" displayOnly= "true"/>
 									<Input change="markToEdit" value="{value}" />
 								</cells>
 							</ColumnListItem>
@@ -42,10 +41,10 @@
 							</Toolbar>
 						</headerToolbar>
 						<columns>
-							<Column  width="25%" minScreenWidth="Tablet"  demandPopin="true" >
+							<Column  width="25%" minScreenWidth="Phone"  demandPopin="true" >
 
 							</Column>
-							<Column  minScreenWidth="Phone">
+							<Column  minScreenWidth="Tablet" demandPopin="true">
 								<Text text="{i18n>Commom.Translate}" />
 							</Column>
 						</columns>

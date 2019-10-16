@@ -22,7 +22,8 @@ sap.ui.define(
 			this
             .getRouter()
             .getRoute('login')
-            .attachPatternMatched(this.beforeLogin, this);
+			.attachPatternMatched(this.beforeLogin, this);
+			this.setUserTheme();
 		},
 		beforeLogin(oEvent){
 			this.destroyNavigation();
@@ -66,9 +67,13 @@ sap.ui.define(
 		createNavigation(){
 			let toogleButton = this.byId("sideNavigationToggleButton");
 			if(toogleButton.getEnabled()) return;
-
-			var model = new RestModel();
-			model.get(this.getServerUrl("AppModel.json"))
+			if (!this._sideMenu) {
+			    this._sideMenu = sap.ui.xmlfragment("<%= appName %>.src.app.SideMenu", this);
+			    this.getView().addDependent(this._sideMenu);
+			}
+			var model = this.createRestModel("AppModel.json");
+			let busy = this.getView()
+			model.get({busy})
 			.then(
 				(data)=>{
 						toogleButton.setEnabled(true)
@@ -86,7 +91,8 @@ sap.ui.define(
 					this.showExeption(err)
 				})
 
-			this._toolPage.setModel(model)
+			this._sideMenu.setModel(model)
+			this._toolPage.setSideContent(this._sideMenu)
 		},
 
 		destroyNavigation(){

@@ -14,16 +14,20 @@ sap.ui.define(
 			this.veiculos = "http://fipeapi.appspot.com/api/1/carros/veiculos/";
 			this.veiculo = "http://fipeapi.appspot.com/api/1/carros/veiculo/";
 			this.ApiRoot = "http://fipeapi.appspot.com/api/1/carros/";
-
+			jQuery.sap.require("sap.ui.core.theming.Parameters");
+			var params = sap.ui.core.theming.Parameters;
+			var myColor = params.get("sapUiDarkBG");
+			console.log(params)
 			this.loadMarcas();
 		},
 
 		loadMarcas(){
 			let url = this.ApiRoot + "/marcas.json"
-      let model = new RestModel();
-      model.removeIncludeCredentials()
-
-			model.get(url).then(()=>{
+			let model = this.createRestModel(url);
+			let busy = this.getView();
+			model
+			.setBusy(busy)
+			.get().then(()=>{
 				let item = this.byId("selectMarca").getSelectedItem().getBindingContext("marcas").getObject();
 				this.updateURLs(item);
 				this.getLoadCars()
@@ -46,19 +50,20 @@ sap.ui.define(
 		},
 
 		onFakeEx(oEvent){
-			var model = new RestModel();
-			let url = this.getServerUrl("FakeException.json")
-			let controlToSetBusy = this.getView();
-			var p = model.get(url, controlToSetBusy);
+			var model = this.createRestModel("FakeException.json");
+			let busy = this.getView();
+			model.removeCredentials()
+			var p = model.get();
 			p.then(this.showExeption)
 			p.catch(this.showExeption)
 		},
 
 		getLoadCars(oEvent){
 			let url = `${this.veiculos}.json`;
-			let model = new RestModel();
-
-			model.get(url).catch(this.showExeption)
+			let model = this.createRestModel(url);
+			let busy = this.getView()
+			model.removeCredentials()
+			model.setBusy(busy).get().catch(this.showExeption)
 			this.setModel(model, "fipe");
 		},
 
@@ -67,29 +72,29 @@ sap.ui.define(
 			let idPath = `${path}/id`;
 			let id = this.getModel("fipe").getProperty(idPath)
 
-			if (!this._dialogModelsAndYear) {
-				this._dialogModelsAndYear = sap.ui.xmlfragment("<%= appName %>.src.pages.centercosts.ChooseFromModal", this);
-                this._dialogModelsAndYear.addStyleClass(this.getOwnerComponent().getContentDensityClass());
-			}
+
+			const _dialogModelsAndYear = sap.ui.xmlfragment("<%= appName %>.src.pages.centercosts.ChooseFromModal", this);
+			_dialogModelsAndYear.addStyleClass(this.getOwnerComponent().getContentDensityClass());
+
 
 			this.SelectedCarUrl = `${this.veiculo}/${id}`;
 			let url = this.SelectedCarUrl + ".json";
-			let model = new RestModel();
+			let model = this.createRestModel(url);
 			const mapCarFields = x =>  {
 				return {
 					Title : `${x.fipe_marca} ${(x.veiculo || "")}`,
 					Description : `${x.key}`}
 			};
-			model.attachRequestCompleted(x =>{
+			model.get().then(x =>{
 				let data = model.getData().map(mapCarFields)
 				model.setData(data);
-			});
-			model.attachRequestFailed((err) => {ctx.showExeption([{message : "Ocorreu um erro ao processar a solicitação"}])});
-			model.loadData(url)
+			}).catch((err) => {ctx.showExeption([{message : "Ocorreu um erro ao processar a solicitação"}])});
 
-			this._dialogModelsAndYear.attachConfirm((oEvent)=> this.loadCarValue(oEvent, this, this.SelectedCarUrl))
-			this._dialogModelsAndYear.setModel(model);
-			this._dialogModelsAndYear.open()
+			_dialogModelsAndYear.attachConfirm((oEvent)=> {
+				this.loadCarValue(oEvent, this, this.SelectedCarUrl)
+			})
+			_dialogModelsAndYear.setModel(model);
+			_dialogModelsAndYear.open()
 
 		},
 
@@ -98,13 +103,13 @@ sap.ui.define(
 
 			url = `${url}/${selectedModel}.json`;
 
-			let modelCar = new RestModel()
-			modelCar.attachRequestFailed((err) => {ctx.showExeption([{message : "Ocorreu um erro ao processar a solicitação"}])});
-			modelCar.attachRequestCompleted((req)=>{
-				if(!req.getParameter("success")) return;
+			let modelCar = this.createRestModel(url);
+			modelCar.get()
+			.then((req)=>{
 				ctx.showDialogPriceView(modelCar);
 			})
-			modelCar.loadData(url)
+			.catch((err) => {ctx.showExeption([{message : "Ocorreu um erro ao processar a solicitação"}])})
+
 		},
 
 		showDialogPriceView: function (model) {

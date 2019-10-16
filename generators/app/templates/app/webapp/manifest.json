@@ -6,7 +6,7 @@
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "title": "<%= appName %>",
-    "description": "<%= appDescription %>",
+    "description": "<%= shortName %>",
     "applicationVersion": {
       "version": "1.0.0"
     }
@@ -20,18 +20,34 @@
       "phone": true
     },
     "supportedThemes": [
-      { "Id": "sap_belize", "Description": "Belize" },
-      { "Id": "sap_belize_plus", "Description": "Belize Plus" },
-      { "Id": "sap_bluecrystal", "Description": "Blue Crystal" },
-      { "Id": "sap_belize_hcb", "Description": "Alto Constraste Preto" },
-      { "Id": "sap_belize_hcw", "Description": "Alto Contraste Branco" }
+      {
+        "Id": "sap_belize",
+        "Description": "Belize"
+      },
+      {
+        "Id": "sap_belize_plus",
+        "Description": "Belize Plus"
+      },
+      {
+        "Id": "sap_bluecrystal",
+        "Description": "Blue Crystal"
+      },
+      {
+        "Id": "sap_belize_hcb",
+        "Description": "Preto"
+      },
+      {
+        "Id": "sap_belize_hcw",
+        "Description": "Branco"
+      }
     ]
   },
   "sap.ui5": {
     "_version": "1.2.0",
     "rootView": "<%= appName %>.src.app.App",
     "config": {
-      "serviceUrl": "webapp/model/data"
+      "serviceUrl": "webapp/model/data",
+      "phpApi": "http://localhost/fluent.api/v1.php/"
     },
     "dependencies": {
       "minUI5Version": "1.34.0",
@@ -59,7 +75,6 @@
         }
       }
     },
-
     "routing": {
       "config": {
         "routerClass": "sap.m.routing.Router",
@@ -70,7 +85,6 @@
           "target": "notFound"
         }
       },
-
       "routes": [
         {
           "pattern": "app",
@@ -103,7 +117,6 @@
           "target": "languages"
         }
       ],
-
       "targets": {
         "dashBoard": {
           "viewName": "DashBoard",
@@ -142,9 +155,8 @@
       }
     }
   },
-
   "name": "<%= appName %>",
-  "short_name": "<%= shortName %>",
+  "short_name": "ROne",
   "start_url": "index.html",
   "display": "standalone",
   "orientation": "portrait",

@@ -11,6 +11,12 @@
       "icon": "sap-icon://show",
       "expanded": true,
       "key": "exemplos"
+    },
+    {
+      "title": "Commom.ApiTeste",
+      "icon": "sap-icon://error",
+      "expanded": true,
+      "key": "ApiTeste"
     }
   ],
   "fixedNavigation": [

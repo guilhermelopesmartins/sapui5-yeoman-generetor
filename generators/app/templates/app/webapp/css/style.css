@@ -15,9 +15,40 @@
 	-ms-filter: blur(2px);
 	filter: blur(2px);
 }
+.primary{
+	background: rgba(23, 0, 128,0.5) !important;
+	
+}
+.card-shodow{
+	box-shadow: 0 0 2px 0.1px #000 !important;
+}
+[data-theme="sap_belize_hcb"]{
+	background: #000 !important;
+	color: #FFF !important;
+	font-size: 1.2em !important;
+}
+[data-theme="sap_belize_hcw"]{
+	background: #FFF !important;
+	color: #000 !important;
+	font-size: 1.2em !important;	
+}
+[data-theme="sap_bluecrystal"]{
+	font-size: 1.2em !important;
+	background: #DEF1F2 !important;
+}
+[data-theme="sap_belize_plus"]{
+	font-size: 1.2em !important;
+	background: #3F5161 !important;
+	color: #FFF !important;
+}
+[data-theme="sap_belize"]{
+	font-size: 1.2em !important;
+	background: #EFF4F9 !important;	
+}
 
 .img-logo-topo{
 	filter: invert(99%);
 	filter: brightness(3.5);
 	max-height: 1.5em;
 }
+

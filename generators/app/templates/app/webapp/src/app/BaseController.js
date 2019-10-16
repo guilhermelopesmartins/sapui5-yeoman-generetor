@@ -2,7 +2,8 @@ sap.ui.define([
 		"sap/ui/core/mvc/Controller",
 		"<%= appName %>/src/pages/exceptions/Exeption.controller",
 		"<%= appName %>/model/formatter",
-	], function (Controller, Exeption, formatter) {
+		"<%= appName %>/model/RestModel",
+	], function (Controller, Exeption, formatter, RestModel) {
 	"use strict";
 
 	return Controller.extend("<%= appName %>.src.app.BaseController", {
@@ -14,20 +15,21 @@ sap.ui.define([
 		},
 
 		setUserTheme : function(){
-			var user = this.getUserSession();
-			if(!user)
-				return;
-
-			if(user.UserSettings == undefined)
-				return;
-
-			if(!user.UserSettings.Theme)
-				return;
-
+			var userTheme = this.getUserTheme();
 			var theme = sap.ui.getCore().getConfiguration().getTheme();
 
-			if(theme != user.UserSettings.Theme)
-				sap.ui.getCore().applyTheme(user.UserSettings.Theme);
+			if(userTheme != theme)
+				sap.ui.getCore().applyTheme(userTheme);
+		},
+
+		getUserTheme(){
+			var user = this.getUserSession();
+			let current = sap.ui.getCore().getConfiguration().getTheme();
+			if(!user.UserSettings)	 return current;
+
+			var theme = user.UserSettings.Theme || current;
+
+			return theme;
 		},
 
 		api :{
@@ -79,7 +81,7 @@ sap.ui.define([
 		},
 
 		getUserSession : function(){
-			return this.getItem(this.USER_SESSION_PATH);
+			return this.getItem(this.USER_SESSION_PATH) || {};
 		},
 
 		setUserSession : function(userData){
@@ -106,9 +108,30 @@ sap.ui.define([
 			localStorage.removeItem(path);
 		},
 
-    extractObjects: (oEvent) => {
-			let objects = oEvent.getParameter("selectedContexts").map(x => x.getObject())
-			return objects;
+		getUserSettings(){
+
+			const settings = this.getUserSession().UserSettings || {};
+			return settings;
 		},
+
+		createRestModel(path){
+			console.log(this.getUserSession())
+			const pageSize = this.getUserSettings().MaxRegistryTake;
+			const uri = path.startsWith("http") ? path : this.getServerUrl(path);
+			const model = new RestModel();
+
+			if(pageSize) model.addHeader("Prefer", `odata.maxpagesize=${pageSize}`)
+
+			model.setUrl(uri);
+			return model;
+
+		},
+
+		createPhpApiRestModel(path){
+			let uri = this.getOwnerComponent().getMetadata().getConfig().phpApi + path
+			let model = new RestModel();
+			model.setUrl(uri);
+			return model;
+		}
 	});
 });

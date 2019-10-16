@@ -13,10 +13,12 @@ sap.ui.define(
       onInit: function () {
         this.setModel(new RestModel(), "signature");
         this.setModel(new RestModel(), "SelectedCenterCosts");
-        this.setModel(new RestModel(), "htmlEditor");
+        this.setModel(this.createRestModel("HtmlEditor.json"), "htmlEditor");
         this.ConfgQRCode();
-        this.setModel(new RestModel(this.getServerUrl("Distribuition.json")), "Dimensions");
+        const model = this.createRestModel(this.getServerUrl("Distribuition.json"))
+        this.setModel(model, "Dimensions");
       },
+
       ConfgQRCode() {
         const qrData = {
           ItemCode: "I00001",
@@ -30,23 +32,27 @@ sap.ui.define(
         this.setModel(new RestModel(qrCodeModelData), "qrCodeModel");
 
       },
+
       activateSignature(oEvent) {
         let panel = oEvent.getSource().getParent().getParent();
         panel.setExpanded(true);
         this.byId("signature").activate();
       },
+
       exportSignature() {
         let input = this.byId("signature");
         let img = input.toDataURL();
         this.getModel("signature").setProperty("/signatureIMG", img);
         input.clear()
       },
+
       clearSignature(oEvent) {
         let input = this.byId("signature");
         input.clear();
         this.getModel("signature").setProperty("/signatureIMG", "");
 
       },
+
       openDefaultModeSample: function (oEvent) {
         this.inputId = oEvent.getSource().getId();
         if (!this.oColorPickerPopover) {
@@ -57,11 +63,13 @@ sap.ui.define(
         }
         this.oColorPickerPopover.openBy(oEvent.getSource());
       },
+
       makeQR(oEvent) {
         const textArea = this.byId("stringValue")
         const qrinput = this.byId("qrinput")
         qrinput.makeCode(textArea.getValue())
       },
+
       handlePenColorChanged(oEvent) {
         let color = oEvent.getParameter("colorString");
         MessageToast.show("Chosen color string: " + oEvent.getParameter("colorString"));
@@ -80,9 +88,11 @@ sap.ui.define(
         }
         this.oColorPickerPopover.openBy(oEvent.getSource());
       },
+
       onAfterRendering: function () {
 
       },
+
       _onRouteMatched: function (oEvent) {
 
       },
@@ -140,7 +150,8 @@ sap.ui.define(
       },
 
       fillHtmlValue() {
-        this.getModel("htmlEditor").loadData(this.getServerUrl("HtmlEditor.json"));
+        this.getModel("htmlEditor")
+        .get()
       }
     });
 

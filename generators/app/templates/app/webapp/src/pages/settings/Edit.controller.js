@@ -7,10 +7,11 @@ sap.ui.define([
     "sap/ui/core/BusyIndicator",
     "<%= appName %>/model/formatter",
     'sap/ui/model/Filter',
-    "sap/ui/model/resource/ResourceModel"
+    "sap/ui/model/resource/ResourceModel",
+    "<%= appName %>/model/RestModel",
 ],
 
-function (BaseController, JSONModel, Device, MessageToast, MessageBox, BusyIndicator, formatter, Filter,ResourceModel) {
+function (BaseController, JSONModel, Device, MessageToast, MessageBox, BusyIndicator, formatter, Filter,ResourceModel,RestModel) {
     "use strict";
 
     return BaseController.extend("<%= appName %>.src.pages.settings.Edit", {
@@ -27,7 +28,14 @@ function (BaseController, JSONModel, Device, MessageToast, MessageBox, BusyIndic
             this.oModel.setData(model);
             this.setModel(this.oModel);
             this._loadThemes();
+            this.getModel("oViewModelSelections").setProperty("/selectedTheme/", this.getUserTheme())
+            this.setModel(new JSONModel(this.getUserSession().UserSettings), "userSettings")
+            let modelTEst =this.createRestModel("Distribuition.json");
 
+            console.log(modelTEst)
+        },
+        logPress(oEvent){
+            console.log(oEvent)
         },
         formatter : formatter,
         _loadThemes : function(){
@@ -50,13 +58,27 @@ function (BaseController, JSONModel, Device, MessageToast, MessageBox, BusyIndic
         },
 
         applyConfig : function(oEvent){
-			var newConfig = this.getModel("Settings").getProperty("/Theme");
+            var newConfig = oEvent.getSource().data('theme');
+            console.log(newConfig);
+            this.getModel("oViewModelSelections").setProperty("/selectedTheme/", newConfig)
             sap.ui.getCore().applyTheme(newConfig);
-            this.Save(oEvent)
+            this.SaveTheme(newConfig)
         },
 
-        Save : function(oEvent)     {
-
+        SaveTheme : function(newTheme) {
+            let user = this.getUserSession()
+            let settings = user.UserSettings || {};
+            settings.Theme = newTheme;
+            user.UserSettings = settings;
+            this.setUserSession(user)
+        },
+        onChangeMaxItemsTake(oEvent){
+            let user = this.getUserSession()
+            let settings = user.UserSettings || {};
+            settings.MaxRegistryTake = oEvent.getParameter("value");
+            user.UserSettings = settings;
+            this.setUserSession(user);
+            MessageToast.show(this.getText("Commom.SuccessAction"))
         },
         _onNavRouter:function(oEvent){
             let Router = oEvent.getSource().data("router");

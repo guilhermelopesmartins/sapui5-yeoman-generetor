@@ -8,7 +8,7 @@
 	<tnt:ToolPage id="tooApplPage" sideExpanded="false" >
 		<tnt:header>
 		<tnt:ToolHeader>
-			<Button id="sideNavigationToggleButton"   enabled="false"   icon="sap-icon://menu2" type="Transparent"  press="onSideNavButtonPress" >
+			<Button visible="{AppMenu>/menuVisible}" id="sideNavigationToggleButton"  icon="sap-icon://menu2" type="Transparent"  press="onSideNavButtonPress" >
 				<layoutData>
 					<OverflowToolbarLayoutData priority="NeverOverflow" />
 				</layoutData>
@@ -25,7 +25,12 @@
 				</layoutData>
 			</Text>
 			<ToolbarSpacer />
-			<Button id="userLoggedPopOver"    text="{currentUser>/UserName}" type="Transparent"  icon="sap-icon://person-placeholder"  press="onLoginPopOver">
+			<Button
+				visible="{AppMenu>/menuVisible}"
+				id="userLoggedPopOver"
+				text="{currentUser>/UserName}"
+				type="Transparent"
+				icon="sap-icon://person-placeholder"  press="onLoginPopOver">
 				<layoutData>
 					<OverflowToolbarLayoutData priority="NeverOverflow" />
 				</layoutData>
@@ -42,7 +47,7 @@
 									vertical="true"
 									height="100%">
 
-									<App id="app" />
+									<App id="app" backgroundOpacity=".6" backgroundImage="webapp/img/bg.jpg" />
 				</ScrollContainer>
 			</pages>
 		</NavContainer>

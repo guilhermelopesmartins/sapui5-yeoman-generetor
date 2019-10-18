@@ -14,30 +14,31 @@ sap.ui.define([
 function (BaseController, JSONModel, Device, MessageToast, MessageBox, BusyIndicator, formatter, Filter,ResourceModel,RestModel) {
     "use strict";
 
+
     return BaseController.extend("<%= appName %>.src.pages.settings.Edit", {
 
         onInit : function () {
-
             this
             .getRouter()
             .getRoute('settings')
             .attachPatternMatched(this._onRouteMatched, this);
 
-            var model = {Theme : ''}
-            this.oModel = new JSONModel();
-            this.oModel.setData(model);
-            this.setModel(this.oModel);
-            this._loadThemes();
-            this.getModel("oViewModelSelections").setProperty("/selectedTheme/", this.getUserTheme())
-            this.setModel(new JSONModel(this.getUserSession().UserSettings), "userSettings")
-            let modelTEst =this.createRestModel("Distribuition.json");
-
-            console.log(modelTEst)
+            this._loadThemes()
+            this._loadSettings();
         },
+
+
+
+        updateLocalSettings(){
+            let data = this.getModel("CurrentSetting").getData();
+            this.setItem(this.LOCAL_SETTINGS_PATH, data);
+            MessageToast.show(this.getText("Commom.SuccessAction"))
+        },
+
         logPress(oEvent){
             console.log(oEvent)
         },
-        formatter : formatter,
+
         _loadThemes : function(){
             var themes = this.getOwnerComponent().getMetadata().getManifest()["sap.ui"].supportedThemes;
             var oViewModelSelections = new JSONModel({themes : themes});
@@ -45,40 +46,25 @@ function (BaseController, JSONModel, Device, MessageToast, MessageBox, BusyIndic
         },
 
         _loadSettings : function(){
-            this.byId('idIconTabBar').setBusy(true);
-            let serverURL = this.getServerUrl(this.api.settings);
-            let model = new JSONModel(serverURL);
-
-            this.setModel(model,"Settings");
-            this.byId('idIconTabBar').setBusy(false);
-
+            this._currentSettingModel = new JSONModel(this.getLocalSettings());
+            this.setModel(this._currentSettingModel, "CurrentSetting");
         },
+
         _onRouteMatched : function(oEvent){
-            this._loadSettings();
+
         },
 
         applyConfig : function(oEvent){
             var newConfig = oEvent.getSource().data('theme');
-            console.log(newConfig);
-            this.getModel("oViewModelSelections").setProperty("/selectedTheme/", newConfig)
+            this._currentSettingModel.setProperty("/Theme", newConfig)
             sap.ui.getCore().applyTheme(newConfig);
-            this.SaveTheme(newConfig)
+            this.updateLocalSettings()
         },
 
-        SaveTheme : function(newTheme) {
-            let user = this.getUserSession()
-            let settings = user.UserSettings || {};
-            settings.Theme = newTheme;
-            user.UserSettings = settings;
-            this.setUserSession(user)
-        },
         onChangeMaxItemsTake(oEvent){
-            let user = this.getUserSession()
-            let settings = user.UserSettings || {};
-            settings.MaxRegistryTake = oEvent.getParameter("value");
-            user.UserSettings = settings;
-            this.setUserSession(user);
-            MessageToast.show(this.getText("Commom.SuccessAction"))
+            let maxRegistryTake = oEvent.getParameter("value");
+            this._currentSettingModel.setProperty("/MaxRegistryTake", maxRegistryTake);
+            this.updateLocalSettings();
         },
         _onNavRouter:function(oEvent){
             let Router = oEvent.getSource().data("router");

@@ -6,7 +6,7 @@
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "title": "<%= appName %>",
-    "description": "<%= shortName %>",
+    "description": "<%= appDescription %>",
     "applicationVersion": {
       "version": "1.0.0"
     }
@@ -102,14 +102,9 @@
           "target": "dashBoard"
         },
         {
-          "pattern": "settings/:userName:",
+          "pattern": "settings",
           "name": "settings",
           "target": "settings"
-        },
-        {
-          "pattern": "exemplos",
-          "name": "exemplos",
-          "target": "exemplos"
         },
         {
           "pattern": "languages",
@@ -156,7 +151,7 @@
     }
   },
   "name": "<%= appName %>",
-  "short_name": "ROne",
+  "short_name": "<%= shortName %>",
   "start_url": "index.html",
   "display": "standalone",
   "orientation": "portrait",

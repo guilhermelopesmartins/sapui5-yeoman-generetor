@@ -5,18 +5,6 @@
       "icon": "sap-icon://bbyd-dashboard",
       "expanded": true,
       "key": "dashBoard"
-    },
-    {
-      "title": "Commom.Exemples",
-      "icon": "sap-icon://show",
-      "expanded": true,
-      "key": "exemplos"
-    },
-    {
-      "title": "Commom.ApiTeste",
-      "icon": "sap-icon://error",
-      "expanded": true,
-      "key": "ApiTeste"
     }
   ],
   "fixedNavigation": [

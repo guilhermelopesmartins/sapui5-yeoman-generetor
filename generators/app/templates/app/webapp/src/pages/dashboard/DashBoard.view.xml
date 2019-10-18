@@ -1,55 +1,69 @@
 <core:View
+
 	xmlns:core="sap.ui.core"
-	xmlns:l="sap.ui.layout"
-	xmlns="sap.m"
+    xmlns="sap.m"
+    xmlns:layout="sap.ui.layout"
 	height="100%"
-	xmlns:tnt="sap.tnt"
-	xmlns:sing="<%= appName %>.controls.signature"
-	xmlns:custom="<%= appName %>.controls"
-	xmlns:quillEditor="<%= appName %>.controls.quill"
-	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 	controllerName="<%= appName %>.src.pages.dashboard.DashBoard">
 
-	<Page title="{i18n>App.DasboardTitle}" >
-		<content>
-			<VBox class="sapUiTinyMargin ">
-				<Button  width="100%"  text="Clique aqui para ver um emxemplo da tela de erros" type="Emphasized" press="onFakeEx"></Button>
-			</VBox>
-			<VBox backgroundDesign="Solid" class="sapThemeBrand-asBackgroundColor" width="100%"  height="150px">
+	<Page
+		backgroundDesign="Transparent"
+		class="sapUiNoContentPadding"
+		showHeader="false"
+		id="dashBoardPage">
+        <content>
+            <layout:VerticalLayout class="sapUiResponsiveMargin">
+                <Title
+					titleStyle="H2"
+					text="{i18n>Commom.Home}"
+					class=""/>
 
-			</VBox>
-
-			<List
-				id="fipeList"
-				class="sapUiCriticalText"
-				items="{fipe>/}"
-				includeItemInSelection="true">
-				<headerToolbar>
-					<Toolbar>
-						<Title class="sapThemeBrand"  text="{selectedCompany>/fipe_name}" level="H2" />
-						<tnt:InfoLabel id="il1" text="{fipe>/length}" renderMode="Narrow" colorScheme="1" displayOnly= "true"/>
-						<SearchField  search="filterCars"   width="30%" />
-						<ToolbarSpacer />
-						<Select
-							id="selectMarca"
-							change="updateVeicleSelected"
-							forceSelection="true"
-							selectedKey="6"
-							items="{
-								path: 'marcas>/'
-							}">
-							<core:ListItem key="{marcas>id}" text="{marcas>name}" icon="sap-icon://building"/>
-						</Select>
-					</Toolbar>
-				</headerToolbar>
-				<StandardListItem
-					icon="sap-icon://car-rental"
-					infoState="Success"
-					type="Navigation"
-					title="{fipe>fipe_name}"
-					info="{fipe>fipe_marca}"
-					press="loadCarModels"/>
-			</List>
-		</content>
+                <layout:HorizontalLayout allowWrapping="true">
+                    <GenericTile
+                        id="firstTile"
+                    	frameType="TwoByOne"
+						press="onNavRoute"
+						app:route="drafts"
+						class="shodow sapUiTinyMarginEnd sapUiTinyMarginBottom"
+						header="Header 1">
+                        <TileContent footer="Footer 1">
+                            <content>
+                                <NumericContent
+									icon="sap-icon://pending"
+									value="150"
+									indicator="None" />
+                            </content>
+                        </TileContent>
+                        <TileContent footer="Footer 2">
+                            <content>
+                                <Text text="Second Content" />
+                            </content>
+                        </TileContent>
+                    </GenericTile>
+                    <GenericTile
+                        id="secondTile"
+                    	frameType="TwoByOne"
+						press="onNavRoute"
+						app:route="drafts"
+						class="shodow sapUiTinyMarginEnd sapUiTinyMarginBottom"
+						header="Header 1">
+                        <TileContent footer="Footer 1">
+                            <content>
+                                <NumericContent
+									icon="sap-icon://pending"
+									value="150"
+									indicator="None" />
+                            </content>
+                        </TileContent>
+                        <TileContent footer="Footer 2">
+                            <content>
+                                <Text text="Second Content" />
+                            </content>
+                        </TileContent>
+                    </GenericTile>
+                </layout:HorizontalLayout>
+            </layout:VerticalLayout>
+        </content>
 	</Page>
 </core:View>

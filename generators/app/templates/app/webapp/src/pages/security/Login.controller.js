@@ -22,8 +22,23 @@ sap.ui.define(
 				Password:"",
 				grant_type : 'password'
 			};
-		},
 
+			const conf = new sap.ui.core.Configuration.FormatSettings();
+			conf.setDatePattern("short")
+			let pattertn = conf.getDatePattern()
+			console.log(pattertn)
+
+
+
+		},
+		animate(){
+			const control = this.byId("loginBox").$();
+			control.animate({opacity: 0.25, marginTop: '150px'},500,
+			()=> { control.animate({opacity:1, marginTop: '0px'}, 1000) });
+		},
+		onAfterRendering(){
+			this.animate()
+		},
 
 		onLogin : function(oEvent){
 			this.UserCredentials.UserName = this.byId("userName").getValue()

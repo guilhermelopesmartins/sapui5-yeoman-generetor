@@ -14,6 +14,7 @@ sap.ui.define(
 		fmt:formatter,
 		_toolPage:{},
 		onInit : function(){
+
 			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
 			this._toolPage = this.byId("tooApplPage");
 			this
@@ -23,7 +24,11 @@ sap.ui.define(
             .getRouter()
             .getRoute('login')
 			.attachPatternMatched(this.beforeLogin, this);
-			this.setUserTheme();
+			this.applySelectedTheme();
+			this.initPageModels()
+		},
+		initPageModels(){
+			this.setModel(new RestModel({menuVisible: false}), "AppMenu")
 		},
 		beforeLogin(oEvent){
 			this.destroyNavigation();
@@ -46,7 +51,7 @@ sap.ui.define(
 		onLogOut : function (){
 			this.destroyUserSession();
 			this.getRouter().navTo("login");
-			location.reload()
+			//location.reload()
 		},
 
 		loggedPopOver : function(oEvent){
@@ -66,17 +71,18 @@ sap.ui.define(
 
 		createNavigation(){
 			let toogleButton = this.byId("sideNavigationToggleButton");
-			if(toogleButton.getEnabled()) return;
-			if (!this._sideMenu) {
-			    this._sideMenu = sap.ui.xmlfragment("<%= appName %>.src.app.SideMenu", this);
-			    this.getView().addDependent(this._sideMenu);
-			}
+			if(toogleButton.getVisible()) return;
+
+
+			const sideMenu = sap.ui.xmlfragment("<%= appName %>.src.app.SideMenu", this);
+			this.getView().addDependent(sideMenu);
+
 			var model = this.createRestModel("AppModel.json");
 			let busy = this.getView()
 			model.get({busy})
 			.then(
 				(data)=>{
-						toogleButton.setEnabled(true)
+						toogleButton.setVisible(true)
 						const translateTitle = data => {
 							data.title = this.getText(data.title);
 						}
@@ -91,12 +97,14 @@ sap.ui.define(
 					this.showExeption(err)
 				})
 
-			this._sideMenu.setModel(model)
-			this._toolPage.setSideContent(this._sideMenu)
+			sideMenu.setModel(model)
+			this._toolPage.setSideContent(sideMenu)
+			this.setModel(new RestModel({menuVisible: true}), "AppMenu")
 		},
 
 		destroyNavigation(){
-			this.byId("sideNavigationToggleButton").setEnabled(false);
+			this.byId("sideNavigationToggleButton").setVisible(false);
+			this._toolPage.destroySideContent()
 			this._toolPage.setModel(new RestModel());
 		},
 

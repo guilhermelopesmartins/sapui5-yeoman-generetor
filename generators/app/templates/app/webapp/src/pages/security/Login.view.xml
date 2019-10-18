@@ -5,30 +5,36 @@
 	xmlns:core="sap.ui.core"
 	xmlns:tnt="sap.tnt"
 	height="100%">
-	<Page class="loginBG" backgroundDesign="Transparent"  showHeader="false" id="<%= appName %>LoginPage" >
+	<Page  backgroundDesign="Transparent" showHeader="false" id="<%= appName %>LoginPage" >
 		<content>
+			<VBox  fitContainer="true"  justifyContent="Center" alignItems="Center" alignContent="Center">
+				<VBox
+					id="loginBox"
+					class="sapUiContentPadding round shodow"
+					width="232px"
+					backgroundDesign="Solid"
+					alignItems="Center"
+					alignContent="Center">
 
-			<VBox fitContainer="true" justifyContent="Center" alignItems="Center" alignContent="Center">
+						<Image  src="webapp/img/Logo.png" ></Image>
+						<Input id="userName" placeholder="{i18n>Commom.User}" value="{/UserName}">
+							<layoutData>
+								<FlexItemData growFactor="1" minWidth="100%" />
+							</layoutData>
+						</Input>
+						<Input id="userPass" placeholder="{i18n>Commom.Password}" type="Password" value="{/Password}" >
+							<layoutData>
+								<FlexItemData growFactor="1" minWidth="100%" />
+							</layoutData>
+						</Input>
+						<Button id="loginButton" width="100%" text="{i18n>Commom.Login}" type="Emphasized" press="onLogin">
+							<layoutData>
+									<FlexItemData growFactor="1" minWidth="100%" />
+							</layoutData>
+						</Button>
 
-				<items>
-					<Image  src="webapp/img/Logo.png" ></Image>
-					<Input id="userName" placeholder="{i18n>Commom.User}" value="{/UserName}"></Input>
-					<Input id="userPass" placeholder="{i18n>Commom.Password}" type="Password" value="{/Password}" ></Input>
-					<Button id="loginButton" width="11rem" text="{i18n>Commom.Login}" type="Emphasized" press="onLogin"></Button>
-
-				</items>
+				</VBox>
 			</VBox>
-
 		</content>
-		<footer>
-			<Bar>
-				<contentLeft>
-					<Link class="sapUiTinyMarginBegin" href="{i18n>App.Link}"  target="_blank"   text="Invent Software Ltda"></Link>
-				</contentLeft>
-				<contentRight>
-					<Text class="sapUiTinyMarginEnd" text="{i18n>App.Name}"></Text>
-				</contentRight>
-			</Bar>
-		</footer>
 	</Page>
 </mvc:View>

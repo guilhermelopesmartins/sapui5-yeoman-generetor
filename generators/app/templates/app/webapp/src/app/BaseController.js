@@ -7,30 +7,26 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("<%= appName %>.src.app.BaseController", {
-    fmt: formatter,
-    USER_SESSION_PATH: "currentUser",
+		fmt: formatter,
+		USER_SESSION_PATH: "currentUser",
+		LOCAL_SETTINGS_PATH:'localSettings',
+
 		getRouter : function () {
 			return sap.ui.core.UIComponent.getRouterFor(this);
-
 		},
 
-		setUserTheme : function(){
-			var userTheme = this.getUserTheme();
+		applySelectedTheme : function(){
+			var localSettings = this.getLocalSettings();
 			var theme = sap.ui.getCore().getConfiguration().getTheme();
 
-			if(userTheme != theme)
-				sap.ui.getCore().applyTheme(userTheme);
+			if(localSettings.Theme != theme)
+				sap.ui.getCore().applyTheme(localSettings.Theme);
 		},
 
-		getUserTheme(){
-			var user = this.getUserSession();
-			let current = sap.ui.getCore().getConfiguration().getTheme();
-			if(!user.UserSettings)	 return current;
-
-			var theme = user.UserSettings.Theme || current;
-
-			return theme;
-		},
+		getLocalSettings(){
+            const localSettings = this.getItem(this.LOCAL_SETTINGS_PATH) || { Theme : 'sap_bluecrystal', MaxRegistryTake : 20 };
+            return localSettings
+        },
 
 		api :{
 			token : 'tokenEndPoint',

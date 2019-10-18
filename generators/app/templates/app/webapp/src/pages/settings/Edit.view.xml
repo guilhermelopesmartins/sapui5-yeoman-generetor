@@ -7,6 +7,7 @@
     xmlns:custom="<%= appName %>.controls"
     xmlns="sap.m">
     <Page
+        backgroundDesign="Solid"
         id="settingsPage"
         navButtonPress="onNavBack"
         showNavButton="true"
@@ -16,70 +17,70 @@
                 <items>
                     <IconTabFilter icon="sap-icon://palette" iconColor="Critical" text="{i18n>App.Theme}">
                         <Label class="sapUiSmallMarginTop sapUiSmallMarginBegin" text="{i18n>App.Theme}" ></Label>
-                            <l:Grid
-								defaultSpan="L2 M4 S6"
-								content="{oViewModelSelections>/themes/}">
-                                <l:content>
+                        <l:Grid
+                            defaultSpan="L2 M4 S6"
+                            content="{oViewModelSelections>/themes/}">
+                            <l:content>
+                                <GenericTile
+                                    app:theme="{oViewModelSelections>Id}"
+                                    class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout card-shodow"
+                                    header="{oViewModelSelections>Description}"
+                                    subheader="{i18n>Setting.ClickToApply}"
+                                    mode="HeaderMode"
+                                    headerImage="{= ${CurrentSetting>/Theme} === ${oViewModelSelections>Id} ? 'sap-icon://activate' : ''}"
+                                    press="applyConfig">
+                                        <TileContent footer="{= ${CurrentSetting>/Theme} === ${oViewModelSelections>Id} ? ${i18n>Setting.CurrentTheme} : '' }" />
+                                        <customData>
+                                            <core:CustomData
+                                                xmlns:core="sap.ui.core"
+                                                key="theme"
+                                                value="{oViewModelSelections>Id}"
+                                                writeToDom="true"
+                                            />
+                                        </customData>
+                                </GenericTile>
+                            </l:content>
+                        </l:Grid>
+                    </IconTabFilter>
+                    <IconTabSeparator />
+                    <IconTabFilter icon="sap-icon://performance" iconColor="{path : 'CurrentSetting>/MaxRegistryTake', formatter: '.fmt.formatIconColor'}" text="{i18n>App.Performance}">
+                        <l:Grid defaultSpan="L12 M12 S12" class="sapUiSmallMarginTop">
+                            <l:content>
+                                <VBox>
+                                    <ObjectStatus
+                                        class="sapUiSmallMarginBottom"
+                                        text="{i18n>Setting.MaxRecordsPerSearch}"
+                                        state="{
+                                            path: 'CurrentSetting>/MaxRegistryTake',
+                                            formatter: '.fmt.maxRecordsPerSearch'
+                                        }" />
+                                    <Slider min="20" max="300"  change="onChangeMaxItemsTake"   value="{CurrentSetting>/MaxRegistryTake}"   step="20"  enableTickmarks="true" class="sapUiSmallMarginBottom" width="100%">
+                                        <ResponsiveScale tickmarksBetweenLabels="3"/>
+                                    </Slider>
+                                </VBox>
+                            </l:content>
+                        </l:Grid>
+                    </IconTabFilter>
+                    <IconTabSeparator />
+                    <IconTabFilter icon="sap-icon://action-settings" iconColor="Positive" text="{i18n>Commom.GeneralSettings}">
+                        <l:Grid defaultSpan="L12 M12 S12">
+                            <l:content>
+                                <l:HorizontalLayout
+                                    allowWrapping="true">
                                     <GenericTile
-										app:theme="{oViewModelSelections>Id}"
-										class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout card-shodow"
-										header="{oViewModelSelections>Description}"
-										subheader="{i18n>Setting.ClickToApply}"
-										mode="HeaderMode"
-										headerImage="{= ${oViewModelSelections>/selectedTheme} === ${oViewModelSelections>Id} ? 'sap-icon://activate' : ''}"
-										press="applyConfig">
-										<TileContent footer="{= ${oViewModelSelections>/selectedTheme} === ${oViewModelSelections>Id} ? ${i18n>Setting.CurrentTheme} : '' }" />
-											<customData>
-												<core:CustomData
-													xmlns:core="sap.ui.core"
-												key="theme"
-												value="{oViewModelSelections>Id}"
-												writeToDom="true"
-											/>
-										</customData>
-                                        </GenericTile>
-                                    </l:content>
-                                </l:Grid>
-                        </IconTabFilter>
-                        <IconTabSeparator />
-                        <IconTabFilter icon="sap-icon://performance" iconColor="{path : 'Settings>/MaxRecordsPerSearch', formatter: '.formatter.formatIconColor'}" text="{i18n>App.Performance}">
-                            <l:Grid defaultSpan="L12 M12 S12" class="sapUiSmallMarginTop">
-                                <l:content>
-                                    <VBox>
-                                        <ObjectStatus
-											class="sapUiSmallMarginBottom"
-											text="{i18n>Setting.MaxRecordsPerSearch}"
-											state="{
-												path: 'Settings>/MaxRecordsPerSearch',
-												formatter: '.formatter.maxRecordsPerSearch'
-											}" />
-                                        <Slider min="20" max="300"  change="onChangeMaxItemsTake"   value="{userSettings>/MaxRegistryTake}"   step="20"  enableTickmarks="true" class="sapUiSmallMarginBottom" width="100%">
-                                            <ResponsiveScale tickmarksBetweenLabels="3"/>
-                                        </Slider>
-                                    </VBox>
-                                </l:content>
-                            </l:Grid>
-                        </IconTabFilter>
-                        <IconTabSeparator />
-                        <IconTabFilter icon="sap-icon://action-settings" iconColor="Positive" text="{i18n>Commom.GeneralSettings}">
-                            <l:Grid defaultSpan="L12 M12 S12">
-                                <l:content>
-                                    <l:HorizontalLayout
-										allowWrapping="true">
-                                        <GenericTile
-                    					headerImage="sap-icon://globe"
-										press="_onNavRouter"
-										header="{i18n>Commom.Language}"
-										app:router="languages"
-										subheader="{i18n>Commom.LanguageSub}"
-										scope="Display"
-										class="sapUiTinyMargin"></GenericTile>
-                                    </l:HorizontalLayout>
-                                </l:content>
-                            </l:Grid>
-                        </IconTabFilter>
-                    </items>
-                </IconTabBar>
-            </content>
+                                    headerImage="sap-icon://globe"
+                                    press="_onNavRouter"
+                                    header="{i18n>Commom.Language}"
+                                    app:router="languages"
+                                    subheader="{i18n>Commom.LanguageSub}"
+                                    scope="Display"
+                                    class="sapUiTinyMargin"></GenericTile>
+                                </l:HorizontalLayout>
+                            </l:content>
+                        </l:Grid>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
+        </content>
         </Page>
     </mvc:View>

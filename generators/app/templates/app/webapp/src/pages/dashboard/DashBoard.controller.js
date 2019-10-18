@@ -11,20 +11,30 @@ sap.ui.define(
 	return BaseController.extend("<%= appName %>.src.pages.dashboard.DashBoard", {
 
 		onInit : function () {
-			this.veiculos = "http://fipeapi.appspot.com/api/1/carros/veiculos/";
-			this.veiculo = "http://fipeapi.appspot.com/api/1/carros/veiculo/";
-			this.ApiRoot = "http://fipeapi.appspot.com/api/1/carros/";
-			jQuery.sap.require("sap.ui.core.theming.Parameters");
-			var params = sap.ui.core.theming.Parameters;
-			var myColor = params.get("sapUiDarkBG");
-			console.log(params)
-			this.loadMarcas();
+			this.animate()
+		},
+		animate(){
+			this.bounce(this.byId("firstTile"))
+			this.bounce(this.byId("secondTile"))
+		},
+		bounce(control){
+			const nativeEle = control.$();
+			nativeEle.animate({opacity: 0.25, marginTop: '5px'}, 150,
+			()=> { nativeEle.animate({opacity:1, marginTop: '0px'}, 250) });
 		},
 
+		onAfterRendering(){
+			setTimeout(()=>{
+				this.animate()
+
+			}, 500)
+		},
 		loadMarcas(){
 			let url = this.ApiRoot + "/marcas.json"
 			let model = this.createRestModel(url);
 			let busy = this.getView();
+			model.removeCredentials()
+
 			model
 			.setBusy(busy)
 			.get().then(()=>{

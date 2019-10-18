@@ -4,7 +4,7 @@
 }
 .primary{
 	background: rgba(23, 0, 128,0.5) !important;
-	
+
 }
 
 .card-shodow{
@@ -21,7 +21,7 @@
 [data-theme="sap_belize_hcw"]{
 	background: #FFF !important;
 	color: #000 !important;
-	font-size: 1.2em !important;	
+	font-size: 1.2em !important;
 }
 [data-theme="sap_bluecrystal"]{
 	font-size: 1.2em !important;
@@ -34,12 +34,14 @@
 }
 [data-theme="sap_belize"]{
 	font-size: 1.2em !important;
-	background: #EFF4F9 !important;	
+	background: #EFF4F9 !important;
 }
 
 .img-logo-topo{
-	filter: invert(99%);
-	filter: brightness(3.5);
+  /*
+    filter: invert(99%);
+    filter: brightness(3.5);
+  */
 	max-height: 1.5em;
 }
 

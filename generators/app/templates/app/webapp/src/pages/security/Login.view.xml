@@ -16,7 +16,7 @@
 					alignItems="Center"
 					alignContent="Center">
 
-						<Image  src="webapp/img/Logo.png" ></Image>
+						<Image width="200px" height="200px" src="webapp/img/logo.png" ></Image>
 						<Input id="userName" placeholder="{i18n>Commom.User}" value="{/UserName}">
 							<layoutData>
 								<FlexItemData growFactor="1" minWidth="100%" />

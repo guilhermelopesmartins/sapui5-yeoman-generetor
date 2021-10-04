@@ -11,8 +11,10 @@ Primeiro vc precisa instalar o [Yeoman](http://yeoman.io) usando [npm](https://w
 npm install -g yo
 ```
 
-*Após conscluir a instalação, clonar o repositório e navagar até a pasta raiz sapui5-yeoman-generetor, para executar o comando:
-```bash 
+*Após conscluir a instalação, clonar o repositório: e navagar até a pasta raiz sapui5-yeoman-generetor, ex:
+```bash
+git clone https://github.com/Daancustodio/sapui5-yeoman-generetor.git
+cd sapui5-yeoman-generetor
 npm link
 ```
 
